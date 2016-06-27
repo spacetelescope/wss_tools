@@ -47,7 +47,7 @@ LONG_DESCRIPTION = package.__doc__
 builtins._ASTROPY_PACKAGE_NAME_ = PACKAGENAME
 
 # VERSION should be PEP386 compatible (http://www.python.org/dev/peps/pep-0386)
-VERSION = '0.0.dev'
+VERSION = metadata.get('version', '0.0.dev')
 
 # Indicates if this version is a release version
 RELEASE = 'dev' not in VERSION
@@ -65,9 +65,8 @@ generate_version_py(PACKAGENAME, VERSION, RELEASE,
                     get_debug_option(PACKAGENAME))
 
 # Treat everything in scripts except README.rst as a script to be installed
-scripts = [fname for fname in glob.glob(os.path.join('scripts', '*'))
-           if os.path.basename(fname) != 'README.rst']
-
+#scripts = [fname for fname in glob.glob(os.path.join('scripts', '*'))
+#           if os.path.basename(fname) != 'README.rst']
 
 # Get configuration information from all of the various subpackages.
 # See the docstring for setup_helpers.update_package_files for more
@@ -76,7 +75,7 @@ package_info = get_package_info()
 
 # Add the project-global data
 package_info['package_data'].setdefault(PACKAGENAME, [])
-package_info['package_data'][PACKAGENAME].append('data/*')
+#package_info['package_data'][PACKAGENAME].append('data/*')
 
 # Define entry points for command-line scripts
 entry_points = {'console_scripts': []}
@@ -106,7 +105,7 @@ setup(name=PACKAGENAME,
       version=VERSION,
       description=DESCRIPTION,
       scripts=scripts,
-      install_requires=['astropy'],
+      install_requires=['astropy>=1.2'],
       author=AUTHOR,
       author_email=AUTHOR_EMAIL,
       license=LICENSE,
@@ -114,7 +113,7 @@ setup(name=PACKAGENAME,
       long_description=LONG_DESCRIPTION,
       cmdclass=cmdclassd,
       zip_safe=False,
-      use_2to3=True,
+      use_2to3=False,
       entry_points=entry_points,
       **package_info
 )
