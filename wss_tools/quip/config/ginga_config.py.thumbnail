@@ -1,0 +1,18 @@
+def pre_gui_config(ginga):
+    #from ginga.misc.Bunch import Bunch
+
+    # Add custom global plugins
+    #ginga.add_global_plugin(
+    #    Bunch(module='AboutQUIP', ws='left', pfx='wss_tools.plugins'))
+
+    # Add custom local plugins
+    #ginga.add_local_plugin(
+    #    Bunch(module='MosaicAuto', ws='dialogs', pfx='wss_tools.plugins'))
+
+    pass
+
+
+def post_gui_config(ginga):
+    # Auto start local plugins
+    ginga.add_channel('Image')
+    ginga.start_local_plugin('Image', 'MosaicAuto', None)

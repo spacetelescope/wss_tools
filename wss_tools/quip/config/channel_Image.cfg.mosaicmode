@@ -1,0 +1,20 @@
+#
+# Image channel preferences file for MOSAIC mode
+#
+# Place this in file under ~/.ginga with the name "channel_Image.cfg"
+
+autocenter = 'override'
+autozoom = 'override'
+
+# Turn off auto-levels to aid blinking
+autocuts = 'once'
+autocut_method = 'histogram'
+
+color_algorithm = 'linear'
+
+# Remember pan and scale for each individual image because mosaic is there
+profile_use_pan = True
+profile_use_scale = True
+
+# Sort channel history ('loadtime' or 'alpha')
+sort_order = 'alpha'

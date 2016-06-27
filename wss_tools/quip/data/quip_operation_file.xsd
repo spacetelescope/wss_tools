@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+    <xsd:element name="QUIP_OPERATION_FILE">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="CORRECTION_ID" type="xsd:string" />
+                <xsd:element name="OPERATION_TYPE">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:pattern value="THUMBNAIL|FOCUS_SWEEP|SEGMENT_ID|SEGMENT_SEARCH|IMAGE_ARRAY|GLOBAL_ALIGNMENT|FVA_COARSE_MIMF|FVA_FIELD_VIGNETTING_SCAN|IMAGE_STACKING|COARSE_PHASING|PUPIL_IMAGING|FINE_PHASING|MIMF|WAVEFRONT_MAINTENANCE"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:element>
+                <xsd:element name="IMAGES" >
+                    <xsd:complexType>
+                        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+                            <xsd:element name="IMAGE_PATH" type="xsd:string" />
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="OUTPUT" >
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="OUTPUT_DIRECTORY" type="xsd:string" />
+                            <xsd:element name="LOG_FILE_PATH" type="xsd:string" />
+                            <xsd:element name="OUT_FILE_PATH" type="xsd:string" />
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="creator" type="xsd:string" use="required"/>
+            <xsd:attribute name="time" type="xsd:time" use="required"/>
+            <xsd:attribute name="date" type="xsd:date" use="required"/>
+            <xsd:attribute name="version" type="xsd:string" use="required"/>
+            <xsd:attribute name="operational" type="xsd:boolean" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
+

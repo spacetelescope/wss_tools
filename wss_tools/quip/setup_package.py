@@ -3,4 +3,4 @@ from __future__ import absolute_import
 
 
 def get_package_data():
-    return {'wss_tools.quip': ['data/*']}
+    return {'wss_tools.quip': ['data/*', 'config/*']}

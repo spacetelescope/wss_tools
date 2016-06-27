@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified">
+
+  <xs:element name="QUIP_ACTIVITY_LOG">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="LOG_ENTRY"/>
+      </xs:sequence>
+      <xs:attribute name="creator" use="required" fixed="QUIP"/>
+      <xs:attribute name="date" use="required" type="xs:date"/>
+      <xs:attribute name="operational" use="required" type="xs:boolean"/>
+      <xs:attribute name="time" use="required" type="xs:time"/>
+      <xs:attribute name="version" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LOG_ENTRY">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="ENTRY_DATA"/>
+        <xs:element ref="ENTRY_DESCRIPTION"/>
+      </xs:sequence>
+      <xs:attribute name="date" use="required" type="xs:date"/>
+      <xs:attribute name="id" use="required" type="xs:integer"/>
+      <xs:attribute name="time" use="required" type="xs:time"/>
+      <xs:attribute name="type" use="required" type="log_types"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ENTRY_DATA">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="COL"/>
+      </xs:sequence>
+      <xs:attribute name="description" use="optional" type="xs:string"/>
+      <xs:attribute name="id" type="xs:positiveInteger" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="COL">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="ROW"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ROW">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="id" use="required" type="xs:integer"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ENTRY_DESCRIPTION" type="xs:string"/>
+
+  <!-- Data types -->
+
+  <xs:simpleType name="log_types">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="status|warning|error|data"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

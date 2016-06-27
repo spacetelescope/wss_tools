@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+    <xsd:element name="QUIP_OUT">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="OUTPUT_IMAGES" >
+                    <xsd:complexType>
+                        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+                            <xsd:element name="IMAGE_PATH" type="xsd:string" />
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="creator" type="xsd:string"/>
+            <xsd:attribute name="time" type="xsd:time"/>
+            <xsd:attribute name="date" type="xsd:date"/>
+            <xsd:attribute name="version" type="xsd:string"/>
+            <xsd:attribute name="operational" type="xsd:boolean"/>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
+
+

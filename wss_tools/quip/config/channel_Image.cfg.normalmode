@@ -1,0 +1,20 @@
+#
+# Image channel preferences file for ANALYSIS mode
+#
+# Place this in file under ~/.ginga with the name "channel_Image.cfg"
+
+autocenter = 'override'
+autozoom = 'override'
+
+# Auto-level is on
+autocuts = 'override'
+autocut_method = 'histogram'
+
+color_algorithm = 'log'
+
+# Same pan and scale for all images
+profile_use_pan = False
+profile_use_scale = False
+
+# Sort channel history ('loadtime' or 'alpha')
+sort_order = 'alpha'
