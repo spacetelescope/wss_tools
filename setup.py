@@ -25,7 +25,6 @@ try:
     from ConfigParser import ConfigParser
 except ImportError:
     from configparser import ConfigParser
-
 conf = ConfigParser()
 conf.read(['setup.cfg'])
 metadata = dict(conf.items('metadata'))
@@ -65,8 +64,8 @@ generate_version_py(PACKAGENAME, VERSION, RELEASE,
                     get_debug_option(PACKAGENAME))
 
 # Treat everything in scripts except README.rst as a script to be installed
-#scripts = [fname for fname in glob.glob(os.path.join('scripts', '*'))
-#           if os.path.basename(fname) != 'README.rst']
+scripts = [fname for fname in glob.glob(os.path.join('scripts', '*'))
+           if os.path.basename(fname) != 'README.rst']
 
 # Get configuration information from all of the various subpackages.
 # See the docstring for setup_helpers.update_package_files for more

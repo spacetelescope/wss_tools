@@ -1,5 +1,6 @@
 """Module to handle I/O for files."""
 from __future__ import absolute_import, division, print_function
+from astropy.extern import six
 
 # STDLIB
 import os
@@ -8,11 +9,7 @@ from collections import defaultdict
 from datetime import datetime
 from xml.dom import minidom
 
-# THIRD-PARTY
-from astropy.utils.data import get_pkg_data_filename
-from astropy.utils.xml.validate import validate_schema
-
-__all__ = ['output_xml', 'validate_xml']
+__all__ = ['output_xml']
 
 
 # --------------------- #
@@ -27,11 +24,12 @@ def _etree_to_dict(t):
     if children:
         dd = defaultdict(list)
         for dc in map(_etree_to_dict, children):
-            for k, v in dc.iteritems():
+            for k, v in six.iteritems(dc):
                 dd[k].append(v)
-        d = {t.tag: {k: v[0] if len(v) == 1 else v for k, v in dd.iteritems()}}
+        d = {t.tag: {k: v[0] if len(v) == 1 else v
+                     for k, v in six.iteritems(dd)}}
     if t.attrib:
-        d[t.tag].update(('@' + k, v) for k, v in t.attrib.iteritems())
+        d[t.tag].update(('@' + k, v) for k, v in six.iteritems(t.attrib))
     if t.text:
         text = t.text.strip()
         if children or t.attrib:
@@ -48,7 +46,7 @@ def _dict_to_etree(parent, dictitem):
     assert not isinstance(dictitem, list)
 
     if isinstance(dictitem, dict):
-        for (tag, child) in dictitem.iteritems():
+        for (tag, child) in six.iteritems(dictitem):
             if str(tag) == '#text':
                 parent.text = str(child)
             elif str(tag).startswith('@'):
@@ -97,16 +95,6 @@ def output_xml(xmldict, filename):
 
     with open(filename, 'w') as fout:
         fout.write(reparsed.toprettyxml(indent='    '))
-
-
-def validate_xml(filename, schema=''):
-    """Validate XML against given schema using
-    :func:`astropy.utils.xml.validate.validate_schema`.
-    Schema must exist in package data.
-
-    """
-    schemafile = get_pkg_data_filename(os.path.join('data', schema))
-    return validate_schema(filename, schemafile)
 
 
 # -------------- #

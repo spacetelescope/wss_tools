@@ -43,11 +43,15 @@ from astropy_helpers.sphinx.conf import *
 
 # Get configuration information from setup.cfg
 from distutils import config
-conf = config.ConfigParser()
+try:
+    from ConfigParser import ConfigParser
+except ImportError:
+    from configparser import ConfigParser
+conf = ConfigParser()
 conf.read([os.path.join(os.path.dirname(__file__), '..', 'setup.cfg')])
 setup_cfg = dict(conf.items('metadata'))
 
-# -- General configuration ----------------------------------------------------
+# -- General configuration ---------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #needs_sphinx = '1.2'
@@ -65,7 +69,7 @@ exclude_patterns.append('_templates')
 rst_epilog += """
 """
 
-# -- Project information ------------------------------------------------------
+# -- Project information -----------------------------------------------------
 
 # This does not *have* to match the package name, but typically does
 project = setup_cfg['package_name']
@@ -85,8 +89,14 @@ version = package.__version__.split('-', 1)[0]
 # The full version, including alpha/beta/rc tags.
 release = package.__version__
 
+# The reST default role (used for this markup: `text`) to use for all
+# documents.
+default_role = 'py:obj'
 
-# -- Options for HTML output ---------------------------------------------------
+# A list of ignored prefixes for module index sorting.
+modindex_common_prefix = ['wss_tools.']
+
+# -- Options for HTML output -------------------------------------------------
 
 # A NOTE ON HTML THEMES
 # The global astropy configuration uses a custom theme, 'bootstrap-astropy',
@@ -94,6 +104,10 @@ release = package.__version__
 # the options for this theme can be modified by overriding some of the
 # variables set in the global configuration. The variables set in the
 # global configuration are listed below, commented out.
+
+# The theme to use for HTML and HTML Help pages.  See the documentation for
+# a list of builtin themes.
+html_theme = 'sphinx_rtd_theme'
 
 # Add any paths that contain custom themes here, relative to this directory.
 # To use a different custom theme, add the directory containing the theme.
@@ -128,15 +142,16 @@ html_title = '{0} v{1}'.format(project, release)
 htmlhelp_basename = project + 'doc'
 
 
-# -- Options for LaTeX output --------------------------------------------------
+# -- Options for LaTeX output ------------------------------------------------
 
 # Grouping the document tree into LaTeX files. List of tuples
-# (source start file, target name, title, author, documentclass [howto/manual]).
+# (source start file, target name, title, author, documentclass
+# [howto/manual]).
 latex_documents = [('index', project + '.tex', project + u' Documentation',
                     author, 'manual')]
 
 
-# -- Options for manual page output --------------------------------------------
+# -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
@@ -144,7 +159,7 @@ man_pages = [('index', project.lower(), project + u' Documentation',
               [author], 1)]
 
 
-## -- Options for the edit_on_github extension ----------------------------------------
+# -- Options for the edit_on_github extension --------------------------------
 
 if eval(setup_cfg.get('edit_on_github')):
     extensions += ['astropy_helpers.sphinx.ext.edit_on_github']
@@ -158,3 +173,16 @@ if eval(setup_cfg.get('edit_on_github')):
 
     edit_on_github_source_root = ""
     edit_on_github_doc_root = "docs"
+
+
+# -- Special setup -----------------------------------------------------------
+
+# Example configuration for intersphinx: refer to the Python standard library.
+intersphinx_mapping.update({
+    'ginga': ('http://ginga.readthedocs.org/en/latest/', None),
+    'stginga': ('http://stginga.readthedocs.org/en/latest/', None)
+    })
+
+# This loads custom CSS to fix table column not wrapping
+def setup(app):
+   app.add_stylesheet('theme_overrides.css')

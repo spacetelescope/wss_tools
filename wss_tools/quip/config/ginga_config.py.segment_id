@@ -1,10 +1,4 @@
 def pre_gui_config(ginga):
-    #from ginga.misc.Bunch import Bunch
-
-    # Add custom global plugins
-    #ginga.add_global_plugin(
-    #    Bunch(module='AboutQUIP', ws='left', pfx='wss_tools.plugins'))
-
     pass
 
 

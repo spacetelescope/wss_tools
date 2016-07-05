@@ -4,14 +4,29 @@ from __future__ import absolute_import, division, print_function
 __all__ = []
 
 # STDLIB
+import os
 import xml.etree.ElementTree as ET
 
+# THIRD-PARTY
+from astropy.utils.data import get_pkg_data_filename
+from astropy.utils.xml.validate import validate_schema
+
 # LOCAL
-from ..util.io import _etree_to_dict, _get_timestamp, validate_xml
+from ..utils.io import _etree_to_dict, _get_timestamp
 
 __all__ = ['input_xml', 'validate_input_xml', 'validate_output_out_xml',
            'validate_output_log_xml', 'quip_out_dict', 'QUIPLog',
            'QUIPLogEntry']
+
+
+def _validate_xml(filename, schema=''):
+    """Validate XML against given schema using
+    :func:`astropy.utils.xml.validate.validate_schema`.
+    Schema must exist in package data.
+
+    """
+    schemafile = get_pkg_data_filename(os.path.join('data', schema))
+    return validate_schema(filename, schemafile)
 
 
 # -------------- #
@@ -41,11 +56,9 @@ def input_xml(filename):
 
 
 def validate_input_xml(filename):
-    """Like :func:`validate_xml` but use built-in schema for
-    QUIP Operation File (``quip_operation_file.xsd``).
-
+    """Validate schema for QUIP Operation File (``quip_operation_file.xsd``).
     """
-    return validate_xml(filename, schema='quip_operation_file.xsd')
+    return _validate_xml(filename, schema='quip_operation_file.xsd')
 
 
 # -------------- #
@@ -53,19 +66,13 @@ def validate_input_xml(filename):
 # -------------- #
 
 def validate_output_out_xml(filename):
-    """Like :func:`validate_xml` but use built-in schema for
-    QUIP Out File (``quip_out.xsd``).
-
-    """
-    return validate_xml(filename, schema='quip_out.xsd')
+    """Validate schema for QUIP Out File (``quip_out.xsd``)."""
+    return _validate_xml(filename, schema='quip_out.xsd')
 
 
 def validate_output_log_xml(filename):
-    """Like :func:`validate_xml` but use built-in schema for
-    QUIP Log File (``quip_activity_log.xsd``).
-
-    """
-    return validate_xml(filename, schema='quip_activity_log.xsd')
+    """Validate schema for QUIP Log File (``quip_activity_log.xsd``)."""
+    return _validate_xml(filename, schema='quip_activity_log.xsd')
 
 
 def _get_quip_info():
@@ -92,7 +99,8 @@ def quip_out_dict(images=[]):
     Returns
     -------
     out_dict : dict
-        Dictionary to be converted to XML by :func:`output_xml`.
+        Dictionary to be converted to XML by
+        :func:`~wss_tools.utils.io.output_xml`.
 
     """
     d = {'OUTPUT_IMAGES': {'IMAGE_PATH': images}}
@@ -132,7 +140,8 @@ class QUIPLog(object):
         Returns
         -------
         out_dict : dict
-            Dictionary to be converted to XML by :func:`output_xml`.
+            Dictionary to be converted to XML by
+            :func:`~wss_tools.utils.io.output_xml`.
 
         """
         d = {'LOG_ENTRY': []}

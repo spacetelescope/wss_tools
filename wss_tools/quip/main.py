@@ -2,7 +2,7 @@
 
 The main program takes QUIP Operation XML file from WEx.
 Then, it starts Ginga with custom plugins.
-For more information, see :ref:`Running QUIP <running-quip-doc>`.
+For more information, see :ref:`running-quip-doc`.
 
 """
 from __future__ import absolute_import, division, print_function
@@ -20,11 +20,8 @@ from astropy.utils.data import get_pkg_data_filenames
 from astropy.utils.exceptions import AstropyUserWarning
 
 # GINGA
-try:
-    from ginga import main as gmain
-    from ginga.misc.Bunch import Bunch
-except ImportError:  # Need this for RTD to build successfully
-    pass
+from ginga import main as gmain
+from ginga.misc.Bunch import Bunch
 
 # LOCAL
 from . import qio
@@ -67,6 +64,7 @@ def main(args):
         Input XML fails to validate built-in schema.
 
     """
+    from stginga.gingawrapper import _locate_plugin
     global QUIP_DIRECTIVE, QUIP_LOG
 
     inputxml = args.pop(0)
@@ -149,6 +147,11 @@ def main(args):
     # Set Ginga config file(s)
     set_ginga_config(mode=cfgmode, gcfg_suffix=ginga_config_py_sfx)
 
+    # Auto start core global plugins
+    for gplgname in ('ChangeHistory', ):
+        gplg = _locate_plugin(gmain.global_plugins, gplgname)
+        gplg.start = True
+
     # Start Ginga
     sys_args = ['ginga', '--log={0}'.format(gingalog)] + images
     gmain.reference_viewer(sys_args)
@@ -182,13 +185,16 @@ def get_ginga_plugins(op_type):
         local_plugins = []
     elif op_type == 'thumbnail':
         local_plugins = [
-            Bunch(module='MosaicAuto', ws='dialogs', pfx=stg_pfx)]
+            Bunch(module='MosaicAuto', ws='dialogs', pfx=wss_pfx)]
     else:  # normalmode
+        global_plugins += [
+            Bunch(module='SaveQUIP', tab='SaveQUIP', ws='right',
+                  pfx=wss_pfx)]
         local_plugins = [
             Bunch(module='BackgroundSub', ws='dialogs', pfx=stg_pfx),
             Bunch(module='BadPixCorr', ws='dialogs', pfx=stg_pfx),
             Bunch(module='DQInspect', ws='dialogs', pfx=stg_pfx),
-            Bunch(module='SNRCalc', ws='dialogs', pfx=stg_pfx)]
+            Bunch(module='SNRCalc', ws='dialogs', pfx=wss_pfx)]
 
     return global_plugins, local_plugins
 

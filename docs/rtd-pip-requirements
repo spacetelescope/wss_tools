@@ -3,3 +3,4 @@ matplotlib
 Cython
 astropy-helpers
 astropy
+-e git+https://github.com/ejeschke/ginga.git#egg=ginga

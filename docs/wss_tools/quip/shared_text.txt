@@ -1,0 +1,9 @@
+.. _QUIP's package data: https://github.com/STScI-JWST/wss_tools/tree/master/wss_tools/quip/data
+
+.. |gingahomewarn| replace:: To meet JWST Wavefront Sensing analysis needs, QUIP customizes Ginga by installing custom configuration files in your ``$HOME/.ginga`` directory. If the configuration files already exist, they will be overwritten. Please make a backup prior to running QUIP for the first time, if desired.
+
+.. |testdatawarn| replace:: Test data are stored in ``/internal/data2/quip_data`` directory on ``wsslinux2``. QUIP does *not* overwrite existing output files, so it is best if you copy the test data files to your own directory for testing. Otherwise, other people might run into permission issues or QUIP errors when they attempt to overwrite your output files from previous test runs.
+
+.. |exitquip| replace:: Exit QUIP by selecting "File" (top left) and then "Quit".
+
+.. |gingadebuglog| replace:: A log file from Ginga ("ginga.log") is written out to output directory given by the XML. It is overwritten if already exists because it is only useful for debugging Ginga.

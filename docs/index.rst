@@ -1,17 +1,27 @@
-Documentation
-=============
+.. _doc_wss_tools:
 
-This is an affiliated package for the AstroPy package. The documentation for
-this package is here:
+*********
+WSS Tools
+*********
+
+The ``wss_tools`` package contains Python tools for JWST Wavefront Sensing
+Software (WSS). In particular, it provides Quicklook and Image Preprocessor
+(QUIP) for WEx.
+
+
+Using wss_tools
+===============
 
 .. toctree::
   :maxdepth: 2
 
-  wss_tools/index.rst
+  wss_tools/install
+  wss_tools/quip/index
+  wss_tools/ref_api
 
-.. note:: The layout of this directory is simply a suggestion.  To follow
-          traditional practice, do *not* edit this page, but instead place
-          all documentation for the affiliated package inside ``packagename/``.
-          The traditional practice was intended to allow the affiliated
-          package to eventually be merged into the main astropy package.
-          You can follow this practice or choose your own layout.
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
