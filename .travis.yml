@@ -43,8 +43,9 @@ env:
     matrix:
         # Make sure that egg_info works without dependencies
         - SETUP_CMD='egg_info'
+        # DISABLED UNTIL WE HAVE REAL TESTS
         # Try all python versions with the latest numpy
-        - SETUP_CMD='test'
+        #- SETUP_CMD='test'
 
 matrix:
     include:
@@ -54,10 +55,11 @@ matrix:
         #- python: 2.7
         #  env: SETUP_CMD='test --coverage'
 
+        # DISABLED FOR NOW (NEED GINGA DEV)
         # Check for sphinx doc build warnings - we do this first because it
         # may run for a long time
-        - python: 2.7
-          env: SETUP_CMD='build_sphinx -w'
+        #- python: 2.7
+        #  env: SETUP_CMD='build_sphinx -w'
 
         # DISABLED FOR NOW
         # Try Astropy development version
@@ -68,7 +70,7 @@ matrix:
 
         # Do a PEP8 test
         - os: linux
-          env: MAIN_CMD='pep8 wss_tools --count' SETUP_CMD=''
+          env: PYTHON_VERSION=2.7 MAIN_CMD='pep8 wss_tools --count' SETUP_CMD=''
 
 install:
 
