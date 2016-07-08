@@ -311,8 +311,9 @@ def _shrink_input_images(images, outpath='', zoom_factor=0.05, **kwargs):
     def _shrink_one(infile):
         path, fname = os.path.split(infile)
         if os.path.abspath(path) == outpath:
-            warnings.warn('Input and output directories are the same: '
-                          '{0}, {1}; Skipping {2}'.format(
+            warnings.warn(
+                'Input and output directories are the same: '
+                '{0}, {1}; Skipping {2}'.format(
                     path, outpath, fname), AstropyUserWarning)
             return ''
         outfile = os.path.join(outpath, fname)

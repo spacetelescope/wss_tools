@@ -3,6 +3,7 @@
 # no matter how it is invoked within the source tree.
 
 from astropy.tests.pytest_plugins import *
+import os
 
 # Uncomment the following line to treat all DeprecationWarnings as
 # exceptions
@@ -22,7 +23,6 @@ except (NameError, KeyError):  # NameError is needed to support Astropy < 1.0
 # Uncomment the following lines to display the version number of the
 # package rather than the version number of Astropy in the top line when
 # running the tests.
-import os
 
 # This is to figure out the affiliated package version, rather than
 # using Astropy's
