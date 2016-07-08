@@ -69,8 +69,8 @@ matrix:
         #  env: ASTROPY_VERSION=development
 
         # Do a PEP8 test
-        - os: linux
-          env: PYTHON_VERSION=2.7 MAIN_CMD='pep8 wss_tools --count' SETUP_CMD=''
+        - python: 2.7
+          env: MAIN_CMD='pep8 wss_tools --count' SETUP_CMD=''
 
 install:
 
