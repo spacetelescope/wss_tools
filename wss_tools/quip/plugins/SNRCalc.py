@@ -42,10 +42,11 @@ class SNRCalc(SNRCalcParent):
         elif self.op_type in ('FINE_PHASING', 'WAVEFRONT_MAINTENANCE'):
             val = 1500
 
-        elif self.op_type in ('THUMBNAIL', 'FOCUS_SWEEP', 'SEGMENT_ID',
-                         'SEGMENT_SEARCH', 'IMAGE_ARRAY', 'GLOBAL_ALIGNMENT',
-                         'FVA_COARSE_MIMF', 'IMAGE_STACKING',
-                         'FVA_FIELD_VIGNETTING_SCAN'):
+        elif self.op_type in (
+                'THUMBNAIL', 'FOCUS_SWEEP', 'SEGMENT_ID',
+                'SEGMENT_SEARCH', 'IMAGE_ARRAY', 'GLOBAL_ALIGNMENT',
+                'FVA_COARSE_MIMF', 'IMAGE_STACKING',
+                'FVA_FIELD_VIGNETTING_SCAN'):
             val = 500
 
         elif self.op_type == 'COARSE_PHASING':

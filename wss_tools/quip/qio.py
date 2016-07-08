@@ -1,8 +1,6 @@
 """Module to handle I/O for files specific to QUIP."""
 from __future__ import absolute_import, division, print_function
 
-__all__ = []
-
 # STDLIB
 import os
 import xml.etree.ElementTree as ET
@@ -154,8 +152,8 @@ class QUIPLog(object):
             en_d.update(en.xml_dict)
 
             # DISABLED: Because description is now already the image name
-            #en_d['ENTRY_DESCRIPTION'] = '{0}: {1}'.format(
-            #    en.imname, en_d['ENTRY_DESCRIPTION'])
+            # en_d['ENTRY_DESCRIPTION'] = '{0}: {1}'.format(
+            #     en.imname, en_d['ENTRY_DESCRIPTION'])
 
             d['LOG_ENTRY'].append(en_d)
 

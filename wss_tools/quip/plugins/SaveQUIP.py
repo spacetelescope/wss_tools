@@ -9,6 +9,7 @@ import shutil
 from ginga.gw import Widgets
 from ginga.misc.plugins.SaveImage import SaveImage as SaveImageParent
 from ginga.util.iohelper import shorten_name
+from ginga.util.toolbox import generate_cfg_example
 
 # LOCAL
 from wss_tools.quip.main import QUIP_DIRECTIVE, QUIP_LOG
@@ -238,6 +239,5 @@ class SaveQUIP(SaveImageParent):
 # Replace module docstring with config doc for auto insert by Sphinx.
 # In the future, if we need the real docstring, we can append instead of
 # overwrite.
-from ginga.util.toolbox import generate_cfg_example
 __doc__ = generate_cfg_example(
     'plugin_SaveImage', cfgpath='config', package='wss_tools.quip')

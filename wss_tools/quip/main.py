@@ -234,7 +234,8 @@ def set_ginga_config(mode='normalmode', gcfg_suffix='normalmode',
     appropriate version for the given mode.
 
     This must be run *after* :func:`copy_ginga_files`, not before.
-    For a list of affected configuration files, see :ref:`quip-doc-ginga-files`.
+    For a list of affected configuration files, see
+    :ref:`quip-doc-ginga-files`.
 
     "normalmode" is set such that all images are always in cache.
     This is useful if you want to do background subtraction etc.
@@ -311,8 +312,8 @@ def _shrink_input_images(images, outpath='', zoom_factor=0.05, **kwargs):
         path, fname = os.path.split(infile)
         if os.path.abspath(path) == outpath:
             warnings.warn('Input and output directories are the same: '
-                          '{0}, {1}; Skipping {2}'.format(path, outpath, fname),
-                          AstropyUserWarning)
+                          '{0}, {1}; Skipping {2}'.format(
+                    path, outpath, fname), AstropyUserWarning)
             return ''
         outfile = os.path.join(outpath, fname)
         scale_image(infile, outfile, zoom_factor, **kwargs)

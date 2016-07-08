@@ -288,7 +288,7 @@ class NircamMosaic(object):
 
             hdu = fits.PrimaryHDU(mosaic)
 
-            # Inherit some keywords from primary header from first image in list
+            # Inherit some keywords from primary header from 1st image in list
             prihdr = fits.getheader(imlist[0])
             for key in ('ROOTNAME', 'TARGNAME', 'INSTRUME',
                         'FILTER', 'PUPIL', 'DATE-OBS', 'TIME-OBS'):
