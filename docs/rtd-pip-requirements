@@ -4,3 +4,4 @@ Cython
 astropy-helpers
 astropy
 -e git+https://github.com/ejeschke/ginga.git#egg=ginga
+-e git+https://github.com/spacetelescope/stginga.git#egg=stginga
