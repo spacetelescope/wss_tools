@@ -69,7 +69,7 @@ matrix:
         #  env: ASTROPY_VERSION=development
 
         # Do a PEP8 test with pycodestyle
-        - python: 2.7
+        - python: 3.5
           env: MAIN_CMD='pycodestyle wss_tools --count' SETUP_CMD=''
 
 install:
