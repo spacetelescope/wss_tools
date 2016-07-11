@@ -16,6 +16,7 @@ import sys
 import warnings
 
 # THIRD-PARTY
+from astropy.io import fits
 from astropy.utils.data import get_pkg_data_filenames
 from astropy.utils.exceptions import AstropyUserWarning
 
@@ -33,7 +34,7 @@ logging.raiseExceptions = False
 __all__ = ['main', 'get_ginga_plugins', 'copy_ginga_files', 'set_ginga_config']
 __taskname__ = 'QUIP'
 _operational = 'false'  # 'true' or 'false'
-_tempdirname = '.quipcache'  # Sub-dir to store temporary intermediate files
+_tempdirname = 'quipcache'  # Sub-dir to store temporary intermediate files
 QUIP_DIRECTIVE = None  # Store info from input XML
 QUIP_LOG = None  # Store info for output log XML
 
@@ -276,8 +277,8 @@ def set_ginga_config(mode='normalmode', gcfg_suffix='normalmode',
         _do_copy(src, src.replace(sfx, ''), verbose=verbose)
 
 
-def _shrink_input_images(images, outpath='', zoom_factor=0.05, **kwargs):
-    """Shrink input images for mosaic.
+def _shrink_input_images(images, outpath='', new_width=100, **kwargs):
+    """Shrink input images for mosaic, if necessary.
 
     The shrunken images are not deleted on exit;
     User has to remove them manually.
@@ -291,37 +292,69 @@ def _shrink_input_images(images, outpath='', zoom_factor=0.05, **kwargs):
         Output directory. This must be different from input
         directory because image names remain the same.
 
-    zoom_factor, kwargs
-        See :func:`~stginga.utils.scale_image`.
+    new_width : int
+        Width of the shrunken image. Height will be scaled accordingly.
+        Because this will be converted into a zoom factor for
+        :func:`~stginga.utils.scale_image`, requested width might not
+        be the exact one that you get but should be close.
+
+    kwargs : dict
+        Optional keywords for :func:`~stginga.utils.scale_image`.
 
     Returns
     -------
-    thumbnails : list
-        List of shrunken image files in output directory.
-
-    Raises
-    ------
-    ValueError
-        Output directory is the same as input directory.
+    outlist : list
+        List of images to use. If shrunken, the list will include
+        the new image in the ``outpath`` (same filename).
+        If the input is already small enough, shrinking process is
+        skipped and the list will contain the input image instead.
 
     """
     from stginga.utils import scale_image
+
     outpath = os.path.abspath(outpath)
+    debug = kwargs.get('debug', False)
+
+    # Use same extension as scale image.
+    if 'ext' in kwargs:
+        ext = kwargs['ext']
+    else:
+        ext = ('SCI', 1)
+        kwargs['ext'] = ext
 
     def _shrink_one(infile):
-        path, fname = os.path.split(infile)
-        if os.path.abspath(path) == outpath:
-            warnings.warn(
-                'Input and output directories are the same: '
-                '{0}, {1}; Skipping {2}'.format(
-                    path, outpath, fname), AstropyUserWarning)
-            return ''
-        outfile = os.path.join(outpath, fname)
-        scale_image(infile, outfile, zoom_factor, **kwargs)
+        with fits.open(infile) as pf:
+            old_width = pf[ext].data.shape[1]  # (ny, nx)
+
+        # Shrink it.
+        if old_width > new_width:
+            path, fname = os.path.split(infile)
+
+            # Skipping instead of just returning the input image
+            # because want to avoid mosaicking large images.
+            if os.path.abspath(path) == outpath:
+                warnings.warn(
+                    'Input and output directories are the same: '
+                    '{0}, {1}; Skipping {2}'.format(
+                        path, outpath, fname), AstropyUserWarning)
+                outfile = ''
+            else:
+                outfile = os.path.join(outpath, fname)
+                zoom_factor = new_width / old_width
+                scale_image(infile, outfile, zoom_factor, **kwargs)
+
+        # Input already small enough.
+        else:
+            outfile = infile
+            if debug:
+                warnings.warn('{0} has width {1} <= {2}; Using input '
+                              'file'.format(infile, old_width, new_width),
+                              AstropyUserWarning)
+
         return outfile
 
-    thumbnails = sorted(map(_shrink_one, images))
-    return [s for s in thumbnails if s]
+    outlist = [s for s in map(_shrink_one, images) if s]
+    return outlist
 
 
 def _segid_mosaics(images, **kwargs):

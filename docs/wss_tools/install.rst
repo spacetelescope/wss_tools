@@ -49,7 +49,7 @@ AstroConda channel you added earlier::
 
 Now, you can install ``wss_tools`` using ``pip``::
 
-    pip install git+https://github.com/STScI-JWST/wss_tools.git@0.3
+    pip install git+https://github.com/STScI-JWST/wss_tools.git@0.3.1
 
 Dependencies installed using ``conda install`` above can be updated from time
 to time using ``conda update <packagename>`` command as needed. As for those

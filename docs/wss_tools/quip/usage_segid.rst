@@ -42,7 +42,7 @@ from all the detectors using `~wss_tools.utils.mosaic.NircamMosaic`.
 Each exposure is grouped by the same file prefix, assuming
 `standard JWST naming convention <https://confluence.stsci.edu/download/attachments/40187238/DMS_Level_1_and_2_Data_Product_Design_120706.pdf>`_.
 The scaling is set such that each NIRCam SW exposure is 100 pixels.
-The mosaics are saved under a hidden sub-directory named ``.quipcache`` within
+The mosaics are saved under a sub-directory named ``quipcache`` within
 the same directory as the "QUIP Operation File".
 If mosaics already exist from a previous run, they are *not* regenerated.
 

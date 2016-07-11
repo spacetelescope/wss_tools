@@ -32,10 +32,12 @@ Start QUIP (select optional arguments given in square brackets)::
     $ quip operation_file_001.xml [-g +300+150] [--nocopy] [--loglevel=10]
 
 Behind the scenes, QUIP resizes the images to smaller thumbnails and save them
-under a hidden sub-directory named ``.quipcache`` within the same directory as
+under a sub-directory named ``quipcache`` within the same directory as
 the "QUIP Operation File".
+The scaling is set to shrink to a width of 100 pixels, more or less.
+If an image is already small enough, its thumbnail is *not* generated, but
+rather QUIP would just use the original input image.
 If thumbnails already exist from a previous run, they are *not* regenerated.
-The scaling is set at 5%, which is targeted to shrink a 2K image to 100 pixels.
 
 Due to all the pre-processing above, Ginga might take a few seconds to start
 up. To create the mosaic and produce output file for WEx:
