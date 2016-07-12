@@ -48,7 +48,7 @@ If mosaics already exist from a previous run, they are *not* regenerated.
 
 .. note::
 
-    Unlike :ref:`Mosaic of Thumbnails <quip-example-thumbnail-1>` , 
+    Unlike :ref:`Mosaic of Thumbnails <quip-example-thumbnail-1>`, 
     the mosaics generated here do not have WCS,
     but this should not be an issue for this operation type.
 
