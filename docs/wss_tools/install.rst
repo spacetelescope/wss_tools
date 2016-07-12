@@ -42,14 +42,11 @@ Anaconda::
     conda install pyqt
     conda install matplotlib
 
-In that same environment, install the following dependency from the
+In that same environment, install the following dependencies from the
 AstroConda channel you added earlier::
 
     conda install ginga
-
-For now, we use ``pip`` to install ``stginga`` instead of using AstroConda::
-
-    pip install git+https://github.com/spacetelescope/stginga.git@0.1.1
+    conda install stginga
 
 Now, you can install ``wss_tools`` using ``pip`` (there was a decision not
 to include it in AstroConda)::
