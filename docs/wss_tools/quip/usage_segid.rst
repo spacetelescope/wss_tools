@@ -42,9 +42,14 @@ from all the detectors using `~wss_tools.utils.mosaic.NircamMosaic`.
 Each exposure is grouped by the same file prefix, assuming
 `standard JWST naming convention <https://confluence.stsci.edu/download/attachments/40187238/DMS_Level_1_and_2_Data_Product_Design_120706.pdf>`_.
 The scaling is set such that each NIRCam SW exposure is 100 pixels.
-The mosaics are saved under a hidden sub-directory named ``.quipcache`` within
+The mosaics are saved under a sub-directory named ``quipcache`` within
 the same directory as the "QUIP Operation File".
 If mosaics already exist from a previous run, they are *not* regenerated.
+
+.. note::
+
+    Unlike :ref:`quip-example-thumbnail-1`, the mosaics generated here do
+    not have WCS, but this should not be an issue for this operation type.
 
 Due to all the pre-processing above, Ginga might take a few seconds to start
 up. But when it does, you will see the mosaics displayed. To inspect the

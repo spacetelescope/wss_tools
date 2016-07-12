@@ -27,9 +27,9 @@ To add the ``astroconda`` channel::
 
     conda config --add channels http://ssb.stsci.edu/astroconda
 
-In a Bash shell, create a new ``conda`` environment for ``wss_tools`` and
-then switch to that environment (skip this if you want to use default ``root``
-environment)::
+In a Bash shell, create a new ``conda`` environment for ``wss_tools`` using
+Python 3 and then switch to that environment
+(skip this if you want to use default ``root`` environment)::
 
     conda create -n wssenv python=3.5
     source activate wssenv
@@ -39,7 +39,8 @@ Anaconda::
 
     conda install astropy
     conda install scipy
-    conda install scikit-image
+    conda install pyqt
+    conda install matplotlib
 
 In that same environment, install the following dependencies from the
 AstroConda channel you added earlier::
@@ -47,9 +48,10 @@ AstroConda channel you added earlier::
     conda install ginga
     conda install stginga
 
-Now, you can install ``wss_tools`` using ``pip``::
+Now, you can install ``wss_tools`` using ``pip`` (there was a decision not
+to include it in AstroConda)::
 
-    pip install git+https://github.com/STScI-JWST/wss_tools.git@0.3
+    pip install git+https://github.com/STScI-JWST/wss_tools.git@0.3.1
 
 Dependencies installed using ``conda install`` above can be updated from time
 to time using ``conda update <packagename>`` command as needed. As for those
