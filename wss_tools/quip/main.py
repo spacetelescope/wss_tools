@@ -13,12 +13,10 @@ import glob
 import os
 import shutil
 import sys
-import warnings
 
 # THIRD-PARTY
 from astropy.io import fits
 from astropy.utils.data import get_pkg_data_filenames
-from astropy.utils.exceptions import AstropyUserWarning
 
 # GINGA
 from ginga import main as gmain
@@ -31,7 +29,8 @@ from . import qio
 import logging
 logging.raiseExceptions = False
 
-__all__ = ['main', 'get_ginga_plugins', 'copy_ginga_files', 'set_ginga_config']
+__all__ = ['main', 'get_ginga_plugins', 'copy_ginga_files', 'set_ginga_config',
+           'shrink_input_images']
 __taskname__ = 'QUIP'
 _operational = 'false'  # 'true' or 'false'
 _tempdirname = 'quipcache'  # Sub-dir to store temporary intermediate files
@@ -123,10 +122,10 @@ def main(args):
         # Science array can have different EXTNAME values.
         # Try SCI first (JWST/HST), then IMAGE (test).
         try:
-            images = _shrink_input_images(
+            images = shrink_input_images(
                 images, ext=('SCI', 1), outpath=tempdir)
         except KeyError:
-            images = _shrink_input_images(
+            images = shrink_input_images(
                 images, ext=('IMAGE', 1), outpath=tempdir)
 
     elif op_type == 'segment_id':
@@ -154,7 +153,7 @@ def main(args):
         gplg.start = True
 
     # Start Ginga
-    sys_args = ['ginga', '--log={0}'.format(gingalog)] + images
+    sys_args = ['ginga', '--log={0}'.format(gingalog)] + args + images
     gmain.reference_viewer(sys_args)
 
 
@@ -277,7 +276,7 @@ def set_ginga_config(mode='normalmode', gcfg_suffix='normalmode',
         _do_copy(src, src.replace(sfx, ''), verbose=verbose)
 
 
-def _shrink_input_images(images, outpath='', new_width=100, **kwargs):
+def shrink_input_images(images, outpath='', new_width=100, **kwargs):
     """Shrink input images for mosaic, if necessary.
 
     The shrunken images are not deleted on exit;
@@ -333,10 +332,8 @@ def _shrink_input_images(images, outpath='', new_width=100, **kwargs):
             # Skipping instead of just returning the input image
             # because want to avoid mosaicking large images.
             if os.path.abspath(path) == outpath:
-                warnings.warn(
-                    'Input and output directories are the same: '
-                    '{0}, {1}; Skipping {2}'.format(
-                        path, outpath, fname), AstropyUserWarning)
+                print('Input and output directories are the same: '
+                      '{0}; Skipping {1}'.format(outpath, fname))
                 outfile = ''
             else:
                 outfile = os.path.join(outpath, fname)
@@ -347,9 +344,8 @@ def _shrink_input_images(images, outpath='', new_width=100, **kwargs):
         else:
             outfile = infile
             if debug:
-                warnings.warn('{0} has width {1} <= {2}; Using input '
-                              'file'.format(infile, old_width, new_width),
-                              AstropyUserWarning)
+                print('{0} has width {1} <= {2}; Using input '
+                      'file'.format(infile, old_width, new_width))
 
         return outfile
 

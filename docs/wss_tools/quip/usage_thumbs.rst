@@ -31,7 +31,8 @@ Start QUIP (select optional arguments given in square brackets)::
 
     $ quip operation_file_001.xml [-g +300+150] [--nocopy] [--loglevel=10]
 
-Behind the scenes, QUIP resizes the images to smaller thumbnails and save them
+Behind the scenes, QUIP resizes the images to smaller thumbnails using
+:func:`~wss_tools.quip.main.shrink_input_images` and save them
 under a sub-directory named ``quipcache`` within the same directory as
 the "QUIP Operation File".
 The scaling is set to shrink to a width of 100 pixels, more or less.
@@ -48,10 +49,14 @@ up. To create the mosaic and produce output file for WEx:
    where all the loaded Ginga local plugins reside.
 #. Click on "Create Mosaic" to create a mosaic from the thumbnail images based
    on their WCS values. When it is done, you will see the mosaic displayed.
-#. Select one or more images from the list to highlight their footprints on the
-   mosaic.
+#. Click on magnifying glass icon with ``[:]`` (bottom center) to rescale
+   the mosaic such that the entire image is fitted on display. Then you can
+   zoom in or out as desired by clicking on magnifying glass icons with ``+``
+   or ``-``, respectively.
 #. If you need to rescale the display, click on :ref:`ginga:sec-plugins-info`
    tab on the left, enter "Cut Low/High" values, and press "Cut Levels".
+#. Select one or more images from the list to highlight their footprints on the
+   mosaic.
 #. Once you have selected the images to keep, click "Save Selection" under the
    :ref:`doc_mosaicauto` plugin.
 #. |exitquip|

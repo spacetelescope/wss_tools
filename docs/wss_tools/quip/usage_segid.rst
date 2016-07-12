@@ -46,6 +46,11 @@ The mosaics are saved under a sub-directory named ``quipcache`` within
 the same directory as the "QUIP Operation File".
 If mosaics already exist from a previous run, they are *not* regenerated.
 
+.. note::
+
+    Unlike :ref:`quip-example-thumbnail-1`, the mosaics generated here do
+    not have WCS, but this should not be an issue for this operation type.
+
 Due to all the pre-processing above, Ginga might take a few seconds to start
 up. But when it does, you will see the mosaics displayed. To inspect the
 mosaics:
