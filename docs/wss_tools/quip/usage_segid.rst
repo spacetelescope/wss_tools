@@ -48,8 +48,9 @@ If mosaics already exist from a previous run, they are *not* regenerated.
 
 .. note::
 
-    Unlike :ref:`quip-example-thumbnail-1`, the mosaics generated here do
-    not have WCS, but this should not be an issue for this operation type.
+    Unlike :ref:`Mosaic of Thumbnails <quip-example-thumbnail-1>` , 
+    the mosaics generated here do not have WCS,
+    but this should not be an issue for this operation type.
 
 Due to all the pre-processing above, Ginga might take a few seconds to start
 up. But when it does, you will see the mosaics displayed. To inspect the
