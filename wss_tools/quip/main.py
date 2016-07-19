@@ -11,6 +11,7 @@ from astropy.extern.six.moves import map
 # STDLIB
 import glob
 import os
+import platform
 import shutil
 import sys
 
@@ -66,6 +67,7 @@ def main(args):
 
     ValueError
         Input XML fails to validate built-in schema.
+        Validation is skipped for Windows.
 
     """
     from stginga.gingawrapper import _locate_plugin
@@ -76,10 +78,12 @@ def main(args):
     if not os.path.exists(inputxml):
         raise OSError('{0} does not exist'.format(inputxml))
 
-    # Validate input XML (compare return code and display stderr if fails)
-    schema_v = qio.validate_input_xml(inputxml)
-    if schema_v[0] != 0:
-        raise ValueError(schema_v[2])
+    # Validate input XML (compare return code and display stderr if fails).
+    # Skipped for Windows because no xmllint.
+    if platform.system() != 'Windows':
+        schema_v = qio.validate_input_xml(inputxml)
+        if schema_v[0] != 0:
+            raise ValueError(schema_v[2])
 
     if '--nocopy' in args:
         nocopy = True
