@@ -39,8 +39,18 @@ __all__ = ['main', 'get_ginga_plugins', 'copy_ginga_files', 'set_ginga_config',
 __taskname__ = 'QUIP'
 _operational = 'false'  # 'true' or 'false'
 _tempdirname = 'quipcache'  # Sub-dir to store temporary intermediate files
+_iswin = platform.system() == 'Windows'
+_home = None
 QUIP_DIRECTIVE = None  # Store info from input XML
 QUIP_LOG = None  # Store info for output log XML
+
+# Set HOME directory
+if 'HOME' in os.environ:
+    _home = os.environ['HOME']
+elif _iswin:
+    _home = os.path.join(os.environ['HOMEDRIVE'], os.environ['HOMEPATH'])
+else:
+    raise ValueError('Cannot find HOME directory')
 
 
 def main(args):
@@ -80,7 +90,7 @@ def main(args):
 
     # Validate input XML (compare return code and display stderr if fails).
     # Skipped for Windows because no xmllint.
-    if platform.system() != 'Windows':
+    if not _iswin:
         schema_v = qio.validate_input_xml(inputxml)
         if schema_v[0] != 0:
             raise ValueError(schema_v[2])
@@ -228,7 +238,7 @@ def copy_ginga_files(verbose=False):
     # NOTE: There is no need to copy plugins here anymore.
     #
     # Copy configuration files.
-    dstpath = os.path.join(os.environ['HOME'], '.ginga')
+    dstpath = os.path.join(_home, '.ginga')
     if not os.path.exists(dstpath):
         os.makedirs(dstpath)
     for filename in get_pkg_data_filenames('config', pattern='*.*'):
@@ -271,7 +281,7 @@ def set_ginga_config(mode='normalmode', gcfg_suffix='normalmode',
         Print info to screen.
 
     """
-    path = os.path.join(os.environ['HOME'], '.ginga')
+    path = os.path.join(_home, '.ginga')
 
     # Copy ginga_config.py
     sfx = '.' + gcfg_suffix
