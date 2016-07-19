@@ -28,6 +28,10 @@ from . import qio
 # Suppress logging "no handlers" message from Ginga
 import logging
 logging.raiseExceptions = False
+try:
+    logging.lastResort = None
+except AttributeError:
+    pass
 
 __all__ = ['main', 'get_ginga_plugins', 'copy_ginga_files', 'set_ginga_config',
            'shrink_input_images']
