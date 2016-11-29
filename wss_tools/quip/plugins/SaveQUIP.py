@@ -7,7 +7,7 @@ import shutil
 
 # GINGA
 from ginga.gw import Widgets
-from ginga.misc.plugins.SaveImage import SaveImage as SaveImageParent
+from ginga.rv.plugins.SaveImage import SaveImage as SaveImageParent
 from ginga.util.iohelper import shorten_name
 from ginga.util.toolbox import generate_cfg_example
 

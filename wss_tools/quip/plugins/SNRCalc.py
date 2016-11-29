@@ -27,7 +27,7 @@ class SNRCalc(SNRCalcParent):
             # ---- Extract header ----
             image = self.fitsimage.get_image()
             if image is None:
-                intrume = ''
+                instrume = ''
             else:
                 imhdr = image.get_header()
                 instrume = imhdr.get(self._ins_key, '').upper()

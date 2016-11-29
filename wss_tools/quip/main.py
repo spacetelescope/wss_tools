@@ -20,7 +20,7 @@ from astropy.io import fits
 from astropy.utils.data import get_pkg_data_filenames
 
 # GINGA
-from ginga import main as gmain
+from ginga.rv import main as gmain
 from ginga.misc.Bunch import Bunch
 
 # LOCAL
