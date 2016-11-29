@@ -18,3 +18,6 @@ profile_use_scale = False
 
 # Sort channel history ('loadtime' or 'alpha')
 sort_order = 'alpha'
+
+# Table display
+max_rows_for_col_resize = 20000
