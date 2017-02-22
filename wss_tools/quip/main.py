@@ -401,7 +401,7 @@ def _main():
     if len(sys.argv) <= 1:
         print('USAGE: quip operation_file.xml [--nocopy] [--help]')
     elif '--help' in sys.argv:
-        from ginga.main import reference_viewer
+        from ginga.rv.main import reference_viewer
         reference_viewer(['ginga', '--help'])
     elif '--version' in sys.argv:
         try:
