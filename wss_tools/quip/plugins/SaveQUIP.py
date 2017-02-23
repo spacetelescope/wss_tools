@@ -138,7 +138,7 @@ class SaveQUIP(SaveImageParent):
         history_plgname = 'ChangeHistory'
         try:
             history_obj = self.fv.gpmon.getPlugin(history_plgname)
-        except:
+        except Exception:
             self.logger.error(
                 '{0} plugin is not loaded. No {1} will be '
                 'written.'.format(history_plgname, self.logfile))

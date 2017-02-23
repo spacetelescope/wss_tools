@@ -140,5 +140,5 @@ if not _ASTROPY_SETUP_:  # noqa
                             "importing from source, this is expected.")
                     warn(ConfigurationDefaultMissingWarning(wmsg))
                     del e
-                except:
+                except Exception:
                     raise orig_error
