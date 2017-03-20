@@ -14,10 +14,14 @@ __all__ = ['NircamMosaic']
 
 
 class NircamMosaic(object):
-    """Class to handle NIRCAM mosaic.
+    """
+    Class to handle NIRCAM mosaic.
 
     Based on IDL script and its accompanying document at
-    https://confluence.stsci.edu/display/JWST/FPA+mosaic
+    https://confluence.stsci.edu/display/JWST/FPA+mosaic .
+    However, V3 is upside-down in that document, so actual
+    detector layout follows
+    https://jwst-docs.stsci.edu/display/JTI/NIRCam+Detectors .
 
     .. note:: Currently does not support WCS.
 
@@ -91,13 +95,13 @@ class NircamMosaic(object):
         """Mosaic position by detector or channel."""
         key = key.upper()
         if key in ('NRCA4', 'NRCB1'):
-            pos = 'lower_left'
-        elif key in ('NRCA2', 'NRCB3'):
-            pos = 'lower_right'
-        elif key in ('NRCA3', 'NRCB2'):
-            pos = 'upper_left'
-        elif key in ('NRCA1', 'NRCB4'):
             pos = 'upper_right'
+        elif key in ('NRCA2', 'NRCB3'):
+            pos = 'upper_left'
+        elif key in ('NRCA3', 'NRCB2'):
+            pos = 'lower_right'
+        elif key in ('NRCA1', 'NRCB4'):
+            pos = 'lower_left'
         elif key in ('NRCALONG', 'NRCBLONG'):
             pos = 'top'
         elif key == 'SHORT':

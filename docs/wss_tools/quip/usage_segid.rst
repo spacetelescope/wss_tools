@@ -48,13 +48,19 @@ If mosaics already exist from a previous run, they are *not* regenerated.
 
 .. note::
 
-    Unlike :ref:`Mosaic of Thumbnails <quip-example-thumbnail-1>`, 
+    Unlike :ref:`Mosaic of Thumbnails <quip-example-thumbnail-1>`,
     the mosaics generated here do not have WCS,
     but this should not be an issue for this operation type.
 
 Due to all the pre-processing above, Ginga might take a few seconds to start
-up. But when it does, you will see the mosaics displayed. To inspect the
-mosaics:
+up. But when it does, you will see the mosaics displayed following this
+NIRCam layout:
+
+.. image:: images/nircam_mosaic.png
+    :width: 600 px
+    :alt: NIRCam detector layout
+
+To inspect the mosaics:
 
 #. Blink them using the green up and down arrow icons (bottom left).
    Another option is to use the  :ref:`ginga:sec-plugins-blink` local plugin.
