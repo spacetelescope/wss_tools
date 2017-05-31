@@ -41,12 +41,18 @@ Anaconda::
     conda install scipy
     conda install pyqt
     conda install matplotlib
+    conda install pillow
 
 In that same environment, install the following dependencies from the
 AstroConda channel you added earlier::
 
     conda install ginga
     conda install stginga
+
+.. warning::
+
+    ``AboutQUIP`` and ``MosaicAuto`` are currently broken for Ginga 2.6.3,
+    see https://github.com/STScI-JWST/wss_tools/issues/25 .
 
 Now, you can install ``wss_tools`` using ``pip`` (there was a decision not
 to include it in AstroConda)::
