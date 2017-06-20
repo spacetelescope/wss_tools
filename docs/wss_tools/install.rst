@@ -53,6 +53,7 @@ AstroConda channel you added earlier::
 
     ``AboutQUIP`` and ``MosaicAuto`` are currently broken for Ginga 2.6.3,
     see https://github.com/STScI-JWST/wss_tools/issues/25 .
+    If you encounter this issue, use ``conda update ginga`` to update Ginga.
 
 Now, you can install ``wss_tools`` using ``pip`` (there was a decision not
 to include it in AstroConda)::
