@@ -6,8 +6,10 @@ from astropy.extern.six.moves import map
 import os
 
 # THIRD-PARTY
+import astropy
 import numpy as np
 from astropy.io import fits
+from astropy.utils.introspection import minversion
 from scipy.ndimage.interpolation import zoom
 
 __all__ = ['NircamMosaic']
@@ -301,7 +303,10 @@ class NircamMosaic(object):
                 hdu.header[key] = prihdr[key]
 
             hdu.header.add_history('Mosaic from {0}'.format(','.join(imlist)))
-            hdu.writeto(outname, clobber=clobber)
+            if minversion(astropy, '1.3'):
+                hdu.writeto(outname, overwrite=clobber)
+            else:
+                hdu.writeto(outname, clobber=clobber)
             return outname
 
         mosaiclist = sorted(map(_mosaic_one, list(root_list.keys())))
