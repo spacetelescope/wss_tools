@@ -56,7 +56,12 @@ up. To create the mosaic and produce output file for WEx:
 #. If you need to rescale the display, click on :ref:`ginga:sec-plugins-info`
    tab on the left, enter "Cut Low/High" values, and press "Cut Levels".
 #. Select one or more images from the list to highlight their footprints on the
-   mosaic.
+   mosaic. Shift- and control-clicks are also supported.
+   Alternately, you may also select and de-select images by click on them
+   directly on the main display.
+   There are also "Select All" and "Deselect All" buttons for your convenience.
+#. Shortlist of selected images is available under the "Selected" tab.
+   This is basically the image list to be saved.
 #. Once you have selected the images to keep, click "Save Selection" under the
    :ref:`doc_mosaicauto` plugin.
 #. |exitquip|
