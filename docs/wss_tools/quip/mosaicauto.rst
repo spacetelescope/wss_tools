@@ -3,6 +3,12 @@
 MosaicAuto
 ==========
 
+.. note::
+
+    When you are loading, say, hundreds of thumbnails, make sure they are all
+    loaded in :ref:`ginga:sec-plugins-contents` first before clicking the
+    "Create Mosaic" button.
+
 This local plugin is only used in ``MOSAIC`` mode, as defined in
 :ref:`quip-doc-ginga-files`; particularly, the ``THUMBNAIL`` operation type.
 

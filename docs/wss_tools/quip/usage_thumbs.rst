@@ -47,7 +47,8 @@ up. To create the mosaic and produce output file for WEx:
    If you don't see it, click on the "Dialogs" tab. If it is not there, you
    will have to start it manually by looking for it under "Operation" menu,
    where all the loaded Ginga local plugins reside.
-#. Click on "Create Mosaic" to create a mosaic from the thumbnail images based
+#. Make sure all the images are loaded in :ref:`ginga:sec-plugins-contents`.
+   Click on "Create Mosaic" to create a mosaic from the thumbnail images based
    on their WCS values. When it is done, you will see the mosaic displayed.
 #. Click on magnifying glass icon with ``[:]`` (bottom center) to rescale
    the mosaic such that the entire image is fitted on display. Then you can
