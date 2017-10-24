@@ -5,8 +5,8 @@ WSS Tools
     :target: http://www.astropy.org
     :alt: Powered by Astropy Badge
 
-.. image:: https://travis-ci.org/STScI-JWST/wss_tools.svg?branch=master
-    :target: https://travis-ci.org/STScI-JWST/wss_tools
+.. image:: https://travis-ci.org/spacetelescope/wss_tools.svg?branch=master
+    :target: https://travis-ci.org/spacetelescope/wss_tools
     :alt: Travis CI status
 
 .. image:: https://readthedocs.org/projects/wss-tools/badge/?version=latest
