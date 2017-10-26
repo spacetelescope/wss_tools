@@ -23,7 +23,7 @@ three categories below:
 +--------+----------------------------------------------------------------+
 
 The table below lists
-`custom Ginga configuration files <https://github.com/STScI-JWST/wss_tools/tree/master/wss_tools/quip/config>`_
+`custom Ginga configuration files <https://github.com/spacetelescope/wss_tools/tree/master/wss_tools/quip/config>`_
 that are installed installed and used by QUIP:
 
 +----------------------------+--------+---------------------------------------+
