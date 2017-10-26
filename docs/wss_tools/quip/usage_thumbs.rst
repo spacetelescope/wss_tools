@@ -29,7 +29,7 @@ Fix the paths in XML file::
 
 Start QUIP (select optional arguments given in square brackets)::
 
-    $ quip operation_file_001.xml [-g +300+150] [--nocopy] [--loglevel=10]
+    $ quip operation_file_001.xml [--mosaic-thumb-size=100] [-g +300+150] [--nocopy] [--loglevel=10]
 
 Behind the scenes, QUIP resizes the images to smaller thumbnails using
 :func:`~wss_tools.quip.main.shrink_input_images` and save them

@@ -59,8 +59,11 @@ def main(args):
     First argument must be the QUIP Operation XML file.
     Other command line options are as accepted by Ginga, *except* for:
 
-    * Additional ``--nocopy`` option can be used with QUIP to instruct
-      it to not copy its Ginga files to user's HOME directory.
+    * ``--mosaic-thumb-size`` can be used to specify desired width in pixels
+      for individual images to be mosaicked in ``THUMBNAIL`` mode.
+      If not given, the default width is 100 pixels.
+    * ``--nocopy`` can be used with QUIP to instruct
+      it to *not* copy its Ginga files to user's HOME directory.
     * ``--log=filename``, if given in command line, will be ignored
       because QUIP always writes Ginga's log to ``ginga.log`` in the
       output directory provided by QUIP Operation XML file.
@@ -105,11 +108,17 @@ def main(args):
     if not nocopy:
         copy_ginga_files()
 
-    # Ignore any custom log file provided by user
     for i, a in enumerate(args):
+        # Ignore any custom log file provided by user
         if a.startswith('--log='):
             args.pop(i)
-            break
+        # Custom width for THUMBNAIL mode
+        elif a.startswith('--mosaic-thumb-size='):
+            args.pop(i)
+            try:
+                thumb_width = int(a.split('=')[1])
+            except Exception:
+                thumb_width = 100
 
     # Extract info from input XML
     QUIP_DIRECTIVE = qio.input_xml(inputxml)
@@ -141,10 +150,12 @@ def main(args):
         # Try SCI first (JWST/HST), then IMAGE (test).
         try:
             images = shrink_input_images(
-                images, ext=('SCI', 1), outpath=tempdir)
+                images, ext=('SCI', 1), new_width=thumb_width,
+                outpath=tempdir)
         except KeyError:
             images = shrink_input_images(
-                images, ext=('IMAGE', 1), outpath=tempdir)
+                images, ext=('IMAGE', 1), new_width=thumb_width,
+                outpath=tempdir)
 
     elif op_type == 'segment_id':
         cfgmode = 'mosaicmode'
@@ -399,7 +410,8 @@ def _segid_mosaics(images, **kwargs):
 def _main():
     """Run from command line."""
     if len(sys.argv) <= 1:
-        print('USAGE: quip operation_file.xml [--nocopy] [--help]')
+        print('USAGE: quip operation_file.xml [--mosaic-thumb-size=100] '
+              '[--nocopy] [--help]')
     elif '--help' in sys.argv:
         from ginga.rv.main import reference_viewer
         reference_viewer(['ginga', '--help'])
