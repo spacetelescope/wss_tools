@@ -108,6 +108,8 @@ def main(args):
     if not nocopy:
         copy_ginga_files()
 
+    thumb_width = 100
+
     for i, a in enumerate(args):
         # Ignore any custom log file provided by user
         if a.startswith('--log='):
@@ -118,7 +120,7 @@ def main(args):
             try:
                 thumb_width = int(a.split('=')[1])
             except Exception:
-                thumb_width = 100
+                pass  # Use default
 
     # Extract info from input XML
     QUIP_DIRECTIVE = qio.input_xml(inputxml)
