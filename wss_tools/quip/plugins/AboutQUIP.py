@@ -1,15 +1,27 @@
-"""About QUIP global plugin for Ginga."""
+"""
+QUIP version info.
+
+**Plugin Type: Global**
+
+``AboutQUIP`` is a global plugin.  Only one instance can be opened.
+
+**Usage**
+
+This plugin allows access to view QUIP version information and operation
+type for the current session.
+
+"""
 from __future__ import absolute_import, division, print_function
 
 # GINGA
 from ginga.GingaPlugin import GlobalPlugin
 from ginga.gw import Widgets
 
-__all__ = []
+__all__ = ['AboutQUIP']
 
 
 class AboutQUIP(GlobalPlugin):
-    """QUIP version info."""
+
     def __init__(self, fv):
         super(AboutQUIP, self).__init__(fv)
         _no_value = 'unknown'

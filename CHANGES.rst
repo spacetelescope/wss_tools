@@ -4,6 +4,7 @@
 This is the last release to support Python 2.
 
 * Updated ``astropy_helpers`` to v2.0.5.
+* Compatibility with Ginga 2.7 and ``stginga`` 0.3.
 
 0.3 (2016-07-08)
 ----------------

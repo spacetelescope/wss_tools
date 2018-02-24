@@ -5,7 +5,9 @@ AboutQUIP
 
 .. image:: images/aboutquip.png
   :width: 400px
+  :align: center
   :alt: AboutQUIP plugin
 
-This global plugin allows access to view QUIP version information and operation
-type for the current session.
+.. automodapi:: wss_tools.quip.plugins.AboutQUIP
+   :no-heading:
+   :skip: AboutQUIP

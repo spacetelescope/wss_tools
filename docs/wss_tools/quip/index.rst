@@ -6,8 +6,8 @@ QUIP
 ====
 
 QUIP stands for *Quicklook and Image Preprocessor* for WEx. It uses
-`Ginga <https://ginga.readthedocs.io/en/latest/>`_ as its GUI, with additional
-plugins from `stginga <https://stginga.readthedocs.io/en/latest/>`_.
+`Ginga <https://ginga.readthedocs.io/en/stable/>`_ as its GUI, with additional
+plugins from `stginga <https://stginga.readthedocs.io/en/stable/>`_.
 
 Basic data flow for QUIP:
 

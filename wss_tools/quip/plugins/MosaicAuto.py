@@ -1,11 +1,32 @@
-"""Automatic mosaic global plugin for QUIP."""
+"""
+Mosaic with option to highlight individual component.
+
+**Plugin Type: Local**
+
+``MosaicAuto`` is a local plugin, which means it is associated with a
+channel. An instance can be opened for each channel.
+
+**Usage**
+
+.. note::
+
+    When you are loading, say, hundreds of thumbnails, make sure they are all
+    loaded in :ref:`ginga:sec-plugins-contents` first before clicking the
+    "Create Mosaic" button.
+
+This local plugin is only used in ``MOSAIC`` mode, as defined in
+:ref:`quip-doc-ginga-files`; particularly, the ``THUMBNAIL`` operation type.
+
+It is very much like
+:ref:`MosaicAuto in stginga <stginga:local-plugin-mosaicauto>` except that
+the image list associated with the selected footprint(s) is written out to
+"QUIP Out" as given by the "QUIP Operation File".
+
+"""
 from __future__ import absolute_import, division, print_function
 
 # STDLIB
 import os
-
-# GINGA
-from ginga.util.toolbox import generate_cfg_example
 
 # STGINGA
 from stginga.plugins.MosaicAuto import MosaicAuto as MosaicAutoParent
@@ -15,11 +36,10 @@ from wss_tools.quip.main import QUIP_DIRECTIVE
 from wss_tools.quip.qio import quip_out_dict
 from wss_tools.utils.io import output_xml
 
-__all__ = []
+__all__ = ['MosaicAuto']
 
 
 class MosaicAuto(MosaicAutoParent):
-    """Mosaic with option to highlight individual component."""
 
     def save_imlist(self):
         """Save selected image filename(s) to QUIP OUT XML only
@@ -87,8 +107,8 @@ class MosaicAuto(MosaicAutoParent):
         self.update_status('Image list saved' + extra_msg)
 
 
-# Replace module docstring with config doc for auto insert by Sphinx.
-# In the future, if we need the real docstring, we can append instead of
-# overwrite.
-__doc__ = generate_cfg_example(
-    'plugin_Mosaic', cfgpath='config', package='wss_tools.quip')
+# Append module docstring with config doc for auto insert by Sphinx.
+from ginga.util.toolbox import generate_cfg_example  # noqa
+if __doc__ is not None:
+    __doc__ += generate_cfg_example(
+        'plugin_Mosaic', cfgpath='config', package='wss_tools.quip')

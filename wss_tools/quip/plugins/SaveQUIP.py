@@ -1,4 +1,23 @@
-"""Save output images global plugin for QUIP."""
+"""
+Save images to output files.
+
+**Plugin Type: Local**
+
+``SaveQUIP`` is a local plugin, which means it is associated with a
+channel. An instance can be opened for each channel.
+
+**Usage**
+
+This plugin is only used in ``ANALYSIS`` mode, as defined in
+:ref:`quip-doc-ginga-files`.
+
+It is very much like
+:ref:`SaveImage (Save File) in Ginga <ginga:sec-plugins-global-saveimage>`
+except that output directory, suffix, and XML filenames are extracted from
+the given "QUIP Operation File". In addition to output images, "QUIP Out" and
+"QUIP Activity Log" are also saved, if applicable.
+
+"""
 from __future__ import absolute_import, division, print_function
 
 # STDLIB
@@ -9,22 +28,19 @@ import shutil
 from ginga.gw import Widgets
 from ginga.rv.plugins.SaveImage import SaveImage as SaveImageParent
 from ginga.util.iohelper import shorten_name
-from ginga.util.toolbox import generate_cfg_example
 
 # LOCAL
 from wss_tools.quip.main import QUIP_DIRECTIVE, QUIP_LOG
 from wss_tools.quip.qio import quip_out_dict
 from wss_tools.utils.io import output_xml
 
-__all__ = []
+__all__ = ['SaveQUIP']
 
 
 # This uses SaveImage settings but have to be named differently to avoid
 # name confusion in Ginga.
 class SaveQUIP(SaveImageParent):
-    """Save images to output files.
 
-    """
     def __init__(self, fv):
         super(SaveQUIP, self).__init__(fv)
 
@@ -236,8 +252,8 @@ class SaveQUIP(SaveImageParent):
         return 'savequip'
 
 
-# Replace module docstring with config doc for auto insert by Sphinx.
-# In the future, if we need the real docstring, we can append instead of
-# overwrite.
-__doc__ = generate_cfg_example(
-    'plugin_SaveImage', cfgpath='config', package='wss_tools.quip')
+# Append module docstring with config doc for auto insert by Sphinx.
+from ginga.util.toolbox import generate_cfg_example  # noqa
+if __doc__ is not None:
+    __doc__ += generate_cfg_example(
+        'plugin_SaveImage', cfgpath='config', package='wss_tools.quip')

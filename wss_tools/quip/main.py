@@ -172,15 +172,15 @@ def main(args):
     # NOTE: There was a bug with setting this in ginga_config.py,
     #       so we do this here instead.
     global_plugins, local_plugins = get_ginga_plugins(ginga_config_py_sfx)
-    gmain.global_plugins += global_plugins
-    gmain.local_plugins += local_plugins
+    gmain.plugins += global_plugins
+    gmain.plugins += local_plugins
 
     # Set Ginga config file(s)
     set_ginga_config(mode=cfgmode, gcfg_suffix=ginga_config_py_sfx)
 
     # Auto start core global plugins
     for gplgname in ('ChangeHistory', ):
-        gplg = _locate_plugin(gmain.global_plugins, gplgname)
+        gplg = _locate_plugin(gmain.plugins, gplgname)
         gplg.start = True
 
     # Start Ginga
@@ -210,22 +210,28 @@ def get_ginga_plugins(op_type):
     stg_pfx = 'stginga.plugins'
     wss_pfx = 'wss_tools.quip.plugins'
     global_plugins = [
-        Bunch(module='AboutQUIP', tab='AboutQUIP', ws='left', pfx=wss_pfx)]
+        Bunch(module='AboutQUIP', tab='AboutQUIP', workspace='left',
+              category='Custom', ptype='global', pfx=wss_pfx)]
 
     if op_type == 'segment_id':
         local_plugins = []
     elif op_type == 'thumbnail':
         local_plugins = [
-            Bunch(module='MosaicAuto', ws='dialogs', pfx=wss_pfx)]
+            Bunch(module='MosaicAuto', workspace='dialogs',
+                  category='Custom', ptype='local', pfx=wss_pfx)]
     else:  # normalmode
         global_plugins += [
-            Bunch(module='SaveQUIP', tab='SaveQUIP', ws='right',
-                  pfx=wss_pfx)]
+            Bunch(module='SaveQUIP', tab='SaveQUIP', workspace='right',
+                  category='Custom', ptype='global', pfx=wss_pfx)]
         local_plugins = [
-            Bunch(module='BackgroundSub', ws='dialogs', pfx=stg_pfx),
-            Bunch(module='BadPixCorr', ws='dialogs', pfx=stg_pfx),
-            Bunch(module='DQInspect', ws='dialogs', pfx=stg_pfx),
-            Bunch(module='SNRCalc', ws='dialogs', pfx=wss_pfx)]
+            Bunch(module='BackgroundSub', workspace='dialogs',
+                  category='Custom', ptype='local', pfx=stg_pfx),
+            Bunch(module='BadPixCorr', workspace='dialogs',
+                  category='Custom', ptype='local', pfx=stg_pfx),
+            Bunch(module='DQInspect', workspace='dialogs',
+                  category='Custom', ptype='local', pfx=stg_pfx),
+            Bunch(module='SNRCalc', workspace='dialogs',
+                  category='Custom', ptype='local', pfx=wss_pfx)]
 
     return global_plugins, local_plugins
 

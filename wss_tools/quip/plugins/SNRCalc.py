@@ -1,4 +1,18 @@
-"""SNR and Surface background ratio (SBR) calculation local plugin for QUIP."""
+"""
+Signal-to-Noise Ratio (SNR) and Surface Background Ratio (SBR)
+calculation on an image.
+
+**Plugin Type: Local**
+
+``SNRCalc`` is a local plugin, which means it is associated with a
+channel. An instance can be opened for each channel.
+
+**Usage**
+
+This plugin is only used in ``ANALYSIS`` mode, as defined in
+:ref:`quip-doc-ginga-files`.
+
+"""
 from __future__ import absolute_import, division, print_function
 
 # STGINGA
@@ -7,11 +21,11 @@ from stginga.plugins.SNRCalc import SNRCalc as SNRCalcParent
 # LOCAL
 from wss_tools.quip.main import QUIP_DIRECTIVE
 
-__all__ = []
+__all__ = ['SNRCalc']
 
 
 class SNRCalc(SNRCalcParent):
-    """SNR and SBR calculation on an image."""
+
     def __init__(self, fv, fitsimage):
         # superclass defines some variables for us, like logger
         super(SNRCalc, self).__init__(fv, fitsimage)
