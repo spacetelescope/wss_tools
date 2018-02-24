@@ -1,4 +1,8 @@
-0.5 (unreleased)
+1.0 (unreleased)
+----------------
+
+
+0.5 (2018-02-14)
 ----------------
 
 This is the last release to support Python 2.
