@@ -46,8 +46,8 @@ Anaconda::
 In that same environment, install the following dependencies from the
 AstroConda channel you added earlier::
 
-    conda install ginga
-    conda install stginga
+    conda install ginga>=2.7
+    conda install stginga>=0.3
 
 .. warning::
 
@@ -58,7 +58,7 @@ AstroConda channel you added earlier::
 Now, you can install ``wss_tools`` using ``pip`` (there was a decision not
 to include it in AstroConda)::
 
-    pip install git+https://github.com/spacetelescope/wss_tools.git@0.4.1
+    pip install git+https://github.com/spacetelescope/wss_tools.git@0.5
 
 Dependencies installed using ``conda install`` above can be updated from time
 to time using ``conda update <packagename>`` command as needed. As for those

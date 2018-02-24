@@ -3,4 +3,6 @@ def pre_gui_config(ginga):
 
 
 def post_gui_config(ginga):
-    pass
+    # Auto start global plugins
+    ginga.start_global_plugin('Zoom')
+    ginga.start_global_plugin('Header')

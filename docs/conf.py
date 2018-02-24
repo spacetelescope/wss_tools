@@ -178,8 +178,8 @@ if eval(setup_cfg.get('edit_on_github')):
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping.update({
-    'ginga': ('http://ginga.readthedocs.org/en/latest/', None),
-    'stginga': ('http://stginga.readthedocs.org/en/latest/', None)
+    'ginga': ('http://ginga.readthedocs.org/en/stable/', None),
+    'stginga': ('http://stginga.readthedocs.org/en/stable/', None)
     })
 
 # This loads custom CSS to fix table column not wrapping
