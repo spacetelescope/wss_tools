@@ -13,8 +13,6 @@ This plugin is only used in ``ANALYSIS`` mode, as defined in
 :ref:`quip-doc-ginga-files`.
 
 """
-from __future__ import absolute_import, division, print_function
-
 # STGINGA
 from stginga.plugins.SNRCalc import SNRCalc as SNRCalcParent
 

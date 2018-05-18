@@ -1,18 +1,24 @@
 #!/usr/bin/env python
 # Licensed under a 3-clause BSD style license - see LICENSE.rst
 
+import sys
+
+# This is the same check as stginga/__init__.py but this one has to
+# happen before importing ah_bootstrap
+__minimum_python_version__ = '3.5'
+if sys.version_info < tuple((int(val) for val in __minimum_python_version__.split('.'))):
+    sys.stderr.write("ERROR: wss_tools requires Python {} or later\n".format(
+        __minimum_python_version__))
+    sys.exit(1)
+
 import glob
 import os
-import sys
 
 import ah_bootstrap
 from setuptools import setup
 
 #A dirty hack to get around some early import/configurations ambiguities
-if sys.version_info[0] >= 3:
-    import builtins
-else:
-    import __builtin__ as builtins
+import builtins
 builtins._ASTROPY_SETUP_ = True
 
 from astropy_helpers.setup_helpers import (register_commands, get_debug_option,
@@ -21,10 +27,7 @@ from astropy_helpers.git_helpers import get_git_devstr
 from astropy_helpers.version_helpers import generate_version_py
 
 # Get some values from the setup.cfg
-try:
-    from ConfigParser import ConfigParser
-except ImportError:
-    from configparser import ConfigParser
+from configparser import ConfigParser
 conf = ConfigParser()
 conf.read(['setup.cfg'])
 metadata = dict(conf.items('metadata'))
@@ -104,7 +107,7 @@ setup(name=PACKAGENAME,
       version=VERSION,
       description=DESCRIPTION,
       scripts=scripts,
-      install_requires=['numpy', 'scipy', 'astropy>=2', 'ginga>=2.7',
+      install_requires=['numpy', 'scipy', 'astropy>=3', 'ginga>=2.7',
                         'stginga>=0.3'],
       author=AUTHOR,
       author_email=AUTHOR_EMAIL,

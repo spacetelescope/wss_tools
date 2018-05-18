@@ -11,8 +11,6 @@ This plugin allows access to view QUIP version information and operation
 type for the current session.
 
 """
-from __future__ import absolute_import, division, print_function
-
 # GINGA
 from ginga.GingaPlugin import GlobalPlugin
 from ginga.gw import Widgets

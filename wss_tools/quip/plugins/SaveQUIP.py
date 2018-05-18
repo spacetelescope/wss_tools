@@ -18,8 +18,6 @@ the given "QUIP Operation File". In addition to output images, "QUIP Out" and
 "QUIP Activity Log" are also saved, if applicable.
 
 """
-from __future__ import absolute_import, division, print_function
-
 # STDLIB
 import os
 import shutil

@@ -13,12 +13,9 @@ enable_deprecations_as_exceptions()
 # the list of packages for which version numbers are displayed when running
 # the tests. Making it pass for KeyError is essential in some cases when
 # the package uses other astropy affiliated packages.
-try:
-    PYTEST_HEADER_MODULES['Astropy'] = 'astropy'
-    PYTEST_HEADER_MODULES['scikit-image'] = 'skimage'
-    del PYTEST_HEADER_MODULES['h5py']
-except (NameError, KeyError):  # NameError is needed to support Astropy < 1.0
-    pass
+PYTEST_HEADER_MODULES['Astropy'] = 'astropy'
+PYTEST_HEADER_MODULES['scikit-image'] = 'skimage'
+del PYTEST_HEADER_MODULES['h5py']
 
 # Uncomment the following lines to display the version number of the
 # package rather than the version number of Astropy in the top line when
@@ -31,8 +28,5 @@ try:
 except ImportError:
     version = 'dev'
 
-try:
-    packagename = os.path.basename(os.path.dirname(__file__))
-    TESTED_VERSIONS[packagename] = version
-except NameError:   # Needed to support Astropy <= 1.0.0
-    pass
+packagename = os.path.basename(os.path.dirname(__file__))
+TESTED_VERSIONS[packagename] = version
