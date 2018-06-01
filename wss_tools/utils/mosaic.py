@@ -1,6 +1,4 @@
 """This module contains tools for NIRCAM image mosaic."""
-from __future__ import absolute_import, division, print_function
-from astropy.extern.six.moves import map
 
 # STDLIB
 import os

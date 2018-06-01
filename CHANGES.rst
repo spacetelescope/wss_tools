@@ -1,6 +1,7 @@
 1.0 (unreleased)
 ----------------
 
+Python 2 is no longer supported.
 
 0.5 (2018-02-14)
 ----------------

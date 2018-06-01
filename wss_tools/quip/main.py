@@ -5,9 +5,6 @@ Then, it starts Ginga with custom plugins.
 For more information, see :ref:`running-quip-doc`.
 
 """
-from __future__ import absolute_import, division, print_function
-from astropy.extern.six.moves import map
-
 # STDLIB
 import glob
 import os

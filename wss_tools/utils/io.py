@@ -1,6 +1,4 @@
 """Module to handle I/O for files."""
-from __future__ import absolute_import, division, print_function
-from astropy.extern import six
 
 # STDLIB
 import os
@@ -24,12 +22,11 @@ def _etree_to_dict(t):
     if children:
         dd = defaultdict(list)
         for dc in map(_etree_to_dict, children):
-            for k, v in six.iteritems(dc):
+            for k, v in dc.items():
                 dd[k].append(v)
-        d = {t.tag: {k: v[0] if len(v) == 1 else v
-                     for k, v in six.iteritems(dd)}}
+        d = {t.tag: {k: v[0] if len(v) == 1 else v for k, v in dd.items()}}
     if t.attrib:
-        d[t.tag].update(('@' + k, v) for k, v in six.iteritems(t.attrib))
+        d[t.tag].update(('@' + k, v) for k, v in t.attrib.items())
     if t.text:
         text = t.text.strip()
         if children or t.attrib:
@@ -46,7 +43,7 @@ def _dict_to_etree(parent, dictitem):
     assert not isinstance(dictitem, list)
 
     if isinstance(dictitem, dict):
-        for (tag, child) in six.iteritems(dictitem):
+        for (tag, child) in dictitem.items():
             if str(tag) == '#text':
                 parent.text = str(child)
             elif str(tag).startswith('@'):

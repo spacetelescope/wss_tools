@@ -23,8 +23,6 @@ the image list associated with the selected footprint(s) is written out to
 "QUIP Out" as given by the "QUIP Operation File".
 
 """
-from __future__ import absolute_import, division, print_function
-
 # STDLIB
 import os
 

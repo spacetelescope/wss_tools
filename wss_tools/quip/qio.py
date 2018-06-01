@@ -1,5 +1,4 @@
 """Module to handle I/O for files specific to QUIP."""
-from __future__ import absolute_import, division, print_function
 
 # STDLIB
 import os

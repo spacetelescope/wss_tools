@@ -13,7 +13,7 @@ Installation
 Anaconda is the recommended Python distribution for ``wss_tools``.
 If you do not have it already,
 `download Anaconda <http://continuum.io/downloads>`_ and install it
-(Python 3.5+ is recommended but 2.7 should also work). The instructions below
+(Python 3.5+ only). The instructions below
 assume you do *not* want ``wss_tools`` in your default Anaconda environment
 (``root``), but if you do want it, you can skip the part where you create a
 new ``conda`` environment.
@@ -51,12 +51,12 @@ AstroConda channel you added earlier::
 
 .. warning::
 
-    ``AboutQUIP`` and ``MosaicAuto`` are currently broken for Ginga 2.6.3,
+    ``AboutQUIP`` and ``MosaicAuto`` are broken for Ginga 2.6.3,
     see https://github.com/spacetelescope/wss_tools/issues/25 .
     If you encounter this issue, use ``conda update ginga`` to update Ginga.
 
-Now, you can install ``wss_tools`` using ``pip`` (there was a decision not
-to include it in AstroConda)::
+Now, you can install ``wss_tools`` using ``pip`` (there was a concious decision
+not to include it in AstroConda)::
 
     pip install git+https://github.com/spacetelescope/wss_tools.git@master
 
