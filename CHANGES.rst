@@ -3,6 +3,8 @@
 
 Python 2 is no longer supported.
 
+* Up the mosaic limit for saving using ``SaveImage``. [#41]
+
 0.5 (2018-02-14)
 ----------------
 
