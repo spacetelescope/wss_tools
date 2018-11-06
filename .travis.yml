@@ -1,7 +1,12 @@
-language: python
+# We set the language to c because python isn't supported on the MacOS X nodes
+# on Travis. However, the language ends up being irrelevant anyway, since we
+# install Python ourselves using conda.
+language: c
 
-python:
-    - 3.6
+compiler: gcc
+
+os:
+    - linux
 
 # Setting sudo to false opts in to Travis-CI container-based builds.
 sudo: false
@@ -24,6 +29,7 @@ env:
         # The following versions are the 'default' for tests, unless
         # overridden underneath. They are defined here in order to save having
         # to repeat them for all configurations.
+        - PYTHON_VERSION=3.7
         - NUMPY_VERSION=stable
         - ASTROPY_VERSION=stable
         - MAIN_CMD='python setup.py'
@@ -51,22 +57,22 @@ matrix:
 
         # DISABLED FOR NOW
         # Do a coverage test in Python 3.
-        #- python: 3.6
+        #- os: linux
         #  env: SETUP_CMD='test --coverage'
 
         # DISABLED FOR NOW
         # Check for sphinx doc build warnings - we do this first because it
         # may run for a long time
-        #- python: 3.6
-        #  env: SETUP_CMD='build_sphinx -w'
+        #- os: linux
+        #  env: SETUP_CMD='build_docs -w'
 
         # DISABLED FOR NOW
         # Try Astropy development version
-        #- python: 3.6
+        #- os: linux
         #  env: ASTROPY_VERSION=development
 
         # Do a PEP8 test with flake8
-        - python: 3.6
+        - os: linux
           env: MAIN_CMD='flake8 wss_tools --count' SETUP_CMD=''
 
 install:
