@@ -17,9 +17,9 @@ environment:
 
   matrix:
 
-      # We only test Python 3.6
+      # We only test Python 3.7
 
-      - PYTHON_VERSION: "3.6"
+      - PYTHON_VERSION: "3.7"
         ASTROPY_VERSION: "stable"
         NUMPY_VERSION: "stable"
 
