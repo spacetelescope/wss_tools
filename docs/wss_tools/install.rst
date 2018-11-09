@@ -15,7 +15,7 @@ If you do not have it already,
 `download Anaconda <http://continuum.io/downloads>`_ and install it
 (Python 3.5+ only). The instructions below
 assume you do *not* want ``wss_tools`` in your default Anaconda environment
-(``root``), but if you do want it, you can skip the part where you create a
+(``base``), but if you do want it, you can skip the part where you create a
 new ``conda`` environment.
 
 It is recommended that you obtain some of the dependencies from the STScI
@@ -29,7 +29,7 @@ To add the ``astroconda`` channel::
 
 In a Bash shell, create a new ``conda`` environment for ``wss_tools`` using
 Python 3 and then switch to that environment
-(skip this if you want to use default ``root`` environment)::
+(skip this if you want to use default ``base`` environment)::
 
     conda create -n wssenv python=3.7
     source activate wssenv
@@ -66,8 +66,8 @@ installed using ``pip``, use ``pip uninstall <packagename>`` to uninstall the
 old version, and then ``pip install <updated_package_url>`` to install the new
 version.
 
-When you are done with ``wss_tools``, you can switch back to ``root`` Anaconda
+When you are done with ``wss_tools``, you can switch back to ``base`` Anaconda
 environment by deactivating the ``wssenv`` environment (skip this if you are
-using the default ``root`` environment)::
+using the default ``base`` environment)::
 
     source deactivate
