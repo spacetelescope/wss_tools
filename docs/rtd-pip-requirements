@@ -1,6 +1,7 @@
-numpy
+numpy>=1.13
 matplotlib
 Cython
+sphinx-astropy
 astropy-helpers
 astropy
 ginga
