@@ -3,9 +3,10 @@ from ginga.gw import Widgets
 
 import os.path
 
-# Plugin to draw helpful annotations for segment ID. 
+# Plugin to draw helpful annotations for segment ID.
 # based on Ginga example code MyGlobalPlugin.py
 # modified by Marshall Perrin.
+
 
 class SegIDHelper(GingaPlugin.GlobalPlugin):
 
@@ -23,13 +24,6 @@ class SegIDHelper(GingaPlugin.GlobalPlugin):
 
         self.dc = fv.getDrawClasses()
         self.canvas = self.dc.DrawingCanvas()
-
-        # Subscribe to some interesting callbacks that will inform us
-        # of channel events.  You may not need these depending on what
-        # your plugin does
-        #fv.set_callback('add-channel', self.add_channel)
-        #fv.set_callback('delete-channel', self.delete_channel)
-        #fv.set_callback('active-image', self.focus_cb)
 
     def build_gui(self, container):
         """
@@ -90,12 +84,6 @@ class SegIDHelper(GingaPlugin.GlobalPlugin):
 
         # Add our GUI to the container
         container.add_widget(top, stretch=1)
-        # NOTE: if you are building a GUI using a specific widget toolkit
-        # (e.g. Qt) GUI calls, you need to extract the widget or layout
-        # from the non-toolkit specific container wrapper and call on that
-        # to pack your widget, e.g.:
-        #cw = container.get_widget()
-        #cw.addWidget(widget, stretch=1)
 
     def get_channel_info(self, fitsimage):
         chname = self.fv.get_channelName(fitsimage)
@@ -108,8 +96,8 @@ class SegIDHelper(GingaPlugin.GlobalPlugin):
         # Update display in response to new image
         fitsimage = channel.fitsimage
 
-
-        # Ensure this plugin's canvas is added on top of the current image's display
+        # Ensure this plugin's canvas is added on top of
+        # the current image's display
         p_canvas = fitsimage.get_canvas()
         if not p_canvas.has_object(self.canvas):
             p_canvas.add(self.canvas, tag=self.layertag)
@@ -129,17 +117,16 @@ class SegIDHelper(GingaPlugin.GlobalPlugin):
         t1 = Text(50, 50, filename, color=color, fontsize=20, coord='window')
         self.canvas.add(t1)
 
+        # Hard coded locations for NIRCam SW SCAs.
+        # This will need updating if you change the mosaic settings.
 
-        # Hard coded locations for NIRCam SW SCAs. 
-        #This will need updating if you change the mosaic settings.
+        im_size = 256   # must match call to _segid_mosaics in QUIP main.py
 
-        im_size = 256 # must match call to _segid_mosaics in QUIP main.py
-
-        o = 20 # offset
-        sw_sep = 21
-        ab_gap = 150
-        bot = im_size-o
-        top = bot + im_size+sw_sep
+        o = 20            # offset of text relative to SCA
+        sw_sep = 21       # separation between SCAs in same module
+        ab_gap = 150      # separation between modules A and B
+        bot = im_size-o   # Y pos for bottom row
+        top = bot + im_size+sw_sep    # Y pos for top row
         SCA_info = {
                 'A1': [o, bot],
                 'A2': [o, top],
@@ -152,13 +139,16 @@ class SegIDHelper(GingaPlugin.GlobalPlugin):
                 }
 
         for scaname, location in SCA_info.items():
-            # Annotate text for each SCA. 
+            # Annotate text for each SCA.
 
-            # Repeated 2x for a hacky drop shadow effect, for better visibility across a wider range of stretches
-            t2s = Text(location[0]+1, location[1]-1, scaname, color='black', fontsize=18, coord='data')
+            # Repeated 2x for a hacky drop shadow effect,
+            # for better visibility across a wider range of stretches
+            t2s = Text(location[0]+1, location[1]-1, scaname,
+                       color='black', fontsize=18, coord='data')
             self.canvas.add(t2s)
 
-            t2 = Text(location[0], location[1], scaname, color='orange', fontsize=18, coord='data')
+            t2 = Text(location[0], location[1], scaname,
+                      color='orange', fontsize=18, coord='data')
             self.canvas.add(t2)
 
     def close(self):

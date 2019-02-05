@@ -160,7 +160,7 @@ def main(args):
     elif op_type == 'segment_id':
         cfgmode = 'mosaicmode'
         ginga_config_py_sfx = op_type
-        images = _segid_mosaics(images, outpath=tempdir, sw_sca_size=256 )
+        images = _segid_mosaics(images, outpath=tempdir, sw_sca_size=256)
 
     else:  # different kinds of analysis
         cfgmode = 'normalmode'
@@ -216,7 +216,7 @@ def get_ginga_plugins(op_type):
         # Add special plugin for segment ID annotations
         global_plugins += [
             Bunch(module='SegIDHelper', tab='SegIDHelper', workspace='left',
-              category='Custom', ptype='global', pfx=wss_pfx)]
+                  category='Custom', ptype='global', pfx=wss_pfx)]
     elif op_type == 'thumbnail':
         local_plugins = [
             Bunch(module='MosaicAuto', workspace='dialogs',
