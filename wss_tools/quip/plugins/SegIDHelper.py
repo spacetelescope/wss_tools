@@ -85,11 +85,6 @@ class SegIDHelper(GingaPlugin.GlobalPlugin):
         # Add our GUI to the container
         container.add_widget(top, stretch=1)
 
-    def get_channel_info(self, fitsimage):
-        chname = self.fv.get_channelName(fitsimage)
-        chinfo = self.fv.get_channelInfo(chname)
-        return chinfo
-
     # CALLBACKS
 
     def redo(self, channel, image):
@@ -105,23 +100,20 @@ class SegIDHelper(GingaPlugin.GlobalPlugin):
         # auto zoom to fit
         fitsimage.zoom_fit()
 
-        # trash any prior annotations
+        # clean out any prior annotations
         self.canvas.delete_all_objects()
 
         # add new annotations
-
         Text = self.canvas.get_draw_class('text')
-        color = 'yellow'
 
         filename = os.path.basename(image.metadata['path'])
-        t1 = Text(50, 50, filename, color=color, fontsize=20, coord='window')
+        t1 = Text(50, 50, filename, color='yellow', fontsize=20, coord='window')
         self.canvas.add(t1)
 
         # Hard coded locations for NIRCam SW SCAs.
         # This will need updating if you change the mosaic settings.
 
         im_size = 256   # must match call to _segid_mosaics in QUIP main.py
-
         o = 20            # offset of text relative to SCA
         sw_sep = 21       # separation between SCAs in same module
         ab_gap = 150      # separation between modules A and B
