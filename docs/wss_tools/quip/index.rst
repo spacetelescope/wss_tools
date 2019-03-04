@@ -37,6 +37,11 @@ To start QUIP with a "QUIP Operation File" in the current working directory::
 
     $ quip operation_file_001.xml
 
+.. note::
+
+   For help with generating an operation file, check out the `Jupyter notebook example <https://github.com/spacetelescope/wss_tools/tree/master/notebooks/quip_operation_file.ipynb>`_.
+
+
 During the development phase, sometimes unintentional bugs might cause Ginga
 to produce segmentation fault. When this happens, you can do the following
 using `GDB <https://www.gnu.org/software/gdb/>`_ to get the traceback and
