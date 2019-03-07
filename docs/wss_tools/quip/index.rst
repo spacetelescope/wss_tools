@@ -39,7 +39,7 @@ To start QUIP with a "QUIP Operation File" in the current working directory::
 
 .. note::
 
-   For help with generating an operation file, check out the `Jupyter notebook example <https://github.com/spacetelescope/wss_tools/tree/master/notebooks/quip_operation_file.ipynb>`_.
+    For help with generating an operation file, check out the `Jupyter notebook example <https://github.com/spacetelescope/wss_tools/tree/master/notebooks/quip_operation_file.ipynb>`_.
 
 
 During the development phase, sometimes unintentional bugs might cause Ginga
