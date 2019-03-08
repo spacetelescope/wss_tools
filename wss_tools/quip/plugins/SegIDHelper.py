@@ -107,7 +107,8 @@ class SegIDHelper(GingaPlugin.GlobalPlugin):
         Text = self.canvas.get_draw_class('text')
 
         filename = os.path.basename(image.metadata['path'])
-        t1 = Text(50, 50, filename, color='yellow', fontsize=20, coord='window')
+        t1 = Text(50, 50, filename, color='yellow', fontsize=20,
+                  coord='window')
         self.canvas.add(t1)
 
         # Hard coded locations for NIRCam SW SCAs.
