@@ -58,7 +58,8 @@ def main(args):
 
     * ``--mosaic-thumb-size`` can be used to specify desired width in pixels
       for individual images to be mosaicked in ``THUMBNAIL`` mode.
-      If not given, the default width is 100 pixels.
+      If not given, the default width is 100 pixels, except for
+      Segment ID it's 256.
     * ``--nocopy`` can be used with QUIP to instruct
       it to *not* copy its Ginga files to user's HOME directory.
     * ``--log=filename``, if given in command line, will be ignored
@@ -159,7 +160,7 @@ def main(args):
     elif op_type == 'segment_id':
         cfgmode = 'mosaicmode'
         ginga_config_py_sfx = op_type
-        images = _segid_mosaics(images, outpath=tempdir)
+        images = _segid_mosaics(images, outpath=tempdir, sw_sca_size=256)
 
     else:  # different kinds of analysis
         cfgmode = 'normalmode'
@@ -212,6 +213,10 @@ def get_ginga_plugins(op_type):
 
     if op_type == 'segment_id':
         local_plugins = []
+        # Add special plugin for segment ID annotations
+        global_plugins += [
+            Bunch(module='SegIDHelper', tab='SegIDHelper', workspace='left',
+                  category='Custom', ptype='global', pfx=wss_pfx)]
     elif op_type == 'thumbnail':
         local_plugins = [
             Bunch(module='MosaicAuto', workspace='dialogs',
@@ -387,7 +392,7 @@ def shrink_input_images(images, outpath='', new_width=100, **kwargs):
     return outlist
 
 
-def _segid_mosaics(images, **kwargs):
+def _segid_mosaics(images, sw_sca_size=256, **kwargs):
     """Generate a scaled-down NIRCam mosaic for each exposure.
 
     The mosaics are not deleted on exit;
@@ -408,7 +413,7 @@ def _segid_mosaics(images, **kwargs):
 
     """
     from ..utils.mosaic import NircamMosaic
-    m = NircamMosaic()
+    m = NircamMosaic(sw_sca_size=sw_sca_size)
     return m.make_mosaic(images, **kwargs)
 
 
