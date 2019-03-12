@@ -8,13 +8,13 @@ trigger:
 
 jobs:
 
+
+- job: 'Test'
   strategy:
     matrix:
       Python37:
         python.version: '3.7'
     maxParallel: 4
-
-- job: 'Test'
   pool:
     vmImage: 'Ubuntu-16.04'
   steps:
@@ -29,6 +29,11 @@ jobs:
     displayName: 'Run tests'
 
 - job: 'PEP 8'
+  strategy:
+    matrix:
+      Python37:
+        python.version: '3.7'
+    maxParallel: 4
   steps:
   - task: UsePythonVersion@1
     inputs:
