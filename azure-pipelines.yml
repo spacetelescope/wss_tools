@@ -16,6 +16,7 @@ jobs:
       Python37:
         python.version: '3.7'
     maxParallel: 4
+
   steps:
   - task: UsePythonVersion@0
     inputs:
@@ -27,9 +28,10 @@ jobs:
       python setup.py test
     displayName: 'Run tests'
 
-- job: 'PEP 8'
+- job: 'PEP8'
   pool:
     vmImage: 'Ubuntu-16.04'
+
   steps:
   - task: UsePythonVersion@0
     inputs:
