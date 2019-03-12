@@ -24,7 +24,8 @@ jobs:
       architecture: 'x64'
 
   - script: |
-      pip install pytest numpy astropy pytest-astropy
+      python -m pip install --upgrade pip setuptools
+      pip install numpy astropy pytest pytest-astropy
       python setup.py test
     displayName: 'Run tests'
 
@@ -39,6 +40,7 @@ jobs:
       architecture: 'x64'
 
   - script: |
+      python -m pip install --upgrade pip setuptools
       pip install flake8
       flake8 wss_tools --count
     displayName: 'PEP 8 check'
