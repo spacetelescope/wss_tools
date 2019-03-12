@@ -6,13 +6,13 @@
 trigger:
 - master
 
-strategy:
-  matrix:
-    Python37:
-      python.version: '3.7'
-  maxParallel: 4
-
 jobs:
+
+  strategy:
+    matrix:
+      Python37:
+        python.version: '3.7'
+    maxParallel: 4
 
 - job: 'Test'
   pool:
