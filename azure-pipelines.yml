@@ -6,17 +6,17 @@
 trigger:
 - master
 
+strategy:
+  matrix:
+    Python37:
+      python.version: '3.7'
+  maxParallel: 4
+
 jobs:
 
 - job: 'Test'
   pool:
     vmImage: 'Ubuntu-16.04'
-  strategy:
-    matrix:
-      Python37:
-        python.version: '3.7'
-    maxParallel: 4
-
   steps:
   - task: UsePythonVersion@0
     inputs:
@@ -28,6 +28,7 @@ jobs:
       python setup.py test
     displayName: 'Run tests'
 
+- job: 'PEP 8'
   steps:
   - task: UsePythonVersion@1
     inputs:
