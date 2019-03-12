@@ -5,9 +5,9 @@ WSS Tools
     :target: http://www.astropy.org
     :alt: Powered by Astropy Badge
 
-.. image:: https://travis-ci.org/spacetelescope/wss_tools.svg?branch=master
-    :target: https://travis-ci.org/spacetelescope/wss_tools
-    :alt: Travis CI status
+.. image:: https://dev.azure.com/spacetelescope/wss_tools/_apis/build/status/spacetelescope.wss_tools?branchName=master
+    :target: https://dev.azure.com/spacetelescope/wss_tools/_build/latest?definitionId=3&branchName=master
+    :alt: Azure Pipeline Status
 
 .. image:: https://readthedocs.org/projects/wss-tools/badge/?version=latest
     :target: http://wss-tools.readthedocs.io/en/latest/?badge=latest
