@@ -24,7 +24,7 @@ jobs:
       architecture: 'x64'
 
   - script: |
-      pip install pytest
+      pip install pytest numpy astropy
       python setup.py test
     displayName: 'Run tests'
 
