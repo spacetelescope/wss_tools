@@ -8,15 +8,14 @@ trigger:
 
 jobs:
 
-
 - job: 'Test'
+  pool:
+    vmImage: 'Ubuntu-16.04'
   strategy:
     matrix:
       Python37:
         python.version: '3.7'
     maxParallel: 4
-  pool:
-    vmImage: 'Ubuntu-16.04'
   steps:
   - task: UsePythonVersion@0
     inputs:
@@ -29,18 +28,15 @@ jobs:
     displayName: 'Run tests'
 
 - job: 'PEP 8'
-  strategy:
-    matrix:
-      Python37:
-        python.version: '3.7'
-    maxParallel: 4
+  pool:
+    vmImage: 'Ubuntu-16.04'
   steps:
-  - task: UsePythonVersion@1
+  - task: UsePythonVersion@0
     inputs:
       versionSpec: '$(python.version)'
       architecture: 'x64'
 
-    - script: |
+  - script: |
       pip install flake8
       flake8 wss_tools --count
     displayName: 'PEP 8 check'
