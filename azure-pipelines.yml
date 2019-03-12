@@ -28,7 +28,13 @@ jobs:
       python setup.py test
     displayName: 'Run tests'
 
-  - script: |
+  steps:
+  - task: UsePythonVersion@1
+    inputs:
+      versionSpec: '$(python.version)'
+      architecture: 'x64'
+
+    - script: |
       pip install flake8
       flake8 wss_tools --count
     displayName: 'PEP 8 check'
