@@ -24,10 +24,27 @@ jobs:
       architecture: 'x64'
 
   - script: |
+      sudo apt-get install libxml2-utils
       python -m pip install --upgrade pip setuptools
       pip install numpy astropy pytest pytest-astropy
       python setup.py test
     displayName: 'Run tests'
+
+- job: 'Doc'
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+      architecture: 'x64'
+
+  - script: |
+      python -m pip install --upgrade pip setuptools
+      pip install numpy astropy matplotlib sphinx-rtd-theme sphinx-astropy
+      python setup.py build_docs -w
+    displayName: 'Doc build'
 
 - job: 'PEP8'
   pool:
