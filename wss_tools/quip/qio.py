@@ -106,7 +106,7 @@ def quip_out_dict(images=[]):
     return {'QUIP_OUT': d}
 
 
-class QUIPLog(object):
+class QUIPLog:
     """Class to handle QUIP actions to document in log file
     and image history.
 
@@ -159,7 +159,7 @@ class QUIPLog(object):
         return {'QUIP_ACTIVITY_LOG': d}
 
 
-class QUIPLogEntry(object):
+class QUIPLogEntry:
     """Class to handle each log entry for `QUIPLog`.
 
     Parameters

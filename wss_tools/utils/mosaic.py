@@ -13,7 +13,7 @@ from scipy.ndimage.interpolation import zoom
 __all__ = ['NircamMosaic']
 
 
-class NircamMosaic(object):
+class NircamMosaic:
     """
     Class to handle NIRCAM mosaic.
 
