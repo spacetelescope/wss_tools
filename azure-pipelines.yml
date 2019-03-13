@@ -42,9 +42,14 @@ jobs:
 
   - script: |
       python -m pip install --upgrade pip setuptools
-      pip install numpy astropy matplotlib sphinx-rtd-theme sphinx-astropy
+      pip install numpy astropy matplotlib ginga stginga sphinx-rtd-theme sphinx-astropy
       python setup.py build_docs -w
     displayName: 'Doc build'
+
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'htmlDocs'
+      targetPath: 'docs/_build/html'
 
 - job: 'PEP8'
   pool:
