@@ -2,6 +2,7 @@
 
 # STDLIB
 import os
+import warnings
 import xml.etree.ElementTree as ET
 
 # THIRD-PARTY
@@ -11,9 +12,9 @@ from astropy.utils.xml.validate import validate_schema
 # LOCAL
 from ..utils.io import _etree_to_dict, _get_timestamp
 
-__all__ = ['input_xml', 'validate_input_xml', 'validate_output_out_xml',
-           'validate_output_log_xml', 'quip_out_dict', 'QUIPLog',
-           'QUIPLogEntry']
+__all__ = ['input_xml', 'validate_input_xml', 'QUIPOpFile',
+           'validate_output_out_xml', 'validate_output_log_xml',
+           'quip_out_dict', 'QUIPLog', 'QUIPLogEntry']
 
 
 def _validate_xml(filename, schema=''):
@@ -56,6 +57,130 @@ def validate_input_xml(filename):
     """Validate schema for QUIP Operation File (``quip_operation_file.xsd``).
     """
     return _validate_xml(filename, schema='quip_operation_file.xsd')
+
+
+class QUIPOpFile:
+    """Class to handle generation of QUIP Operation File.
+
+    Parameters
+    ----------
+    op_type : {'MIMF', 'SEGMENT_ID', 'THUMBNAIL'}
+        Operation type.
+
+    outdir : str
+        Output directory for the QUIP operation.
+        This is used only for the population of the ``OUTPUT`` fields
+        in the QUIP Operation File.
+
+    correction_id : str
+        Correction ID. Default value is arbitrary.
+
+    create_outdir : bool
+        Create the given ``outdir`` directory tree if it does not exist.
+
+    Raises
+    ------
+    ValueError
+        Invalid operation type.
+
+    Examples
+    --------
+    Create a QUIP Operation File from scratch:
+
+    >>> import glob
+    >>> import os
+    >>> from wss_tools.quip.qio import QUIPOpFile
+    >>> opfile = QUIPOpFile('THUMBNAIL', '/my/path/quip')
+    >>> opfile.input_files = list(map(os.path.abspath, glob.iglob('*.fits')))
+    >>> opfile.write_xml('/my/path/opsfile/operation_file_001.xml')
+
+    """
+    def __init__(self, op_type, outdir, correction_id='R2017061401',
+                 create_outdir=True):
+        valid_op_types = ('MIMF', 'SEGMENT_ID', 'THUMBNAIL')
+
+        if op_type not in valid_op_types:
+            raise ValueError(
+                'Valid operation types: {}'.format(','.join(valid_op_types)))
+
+        if create_outdir and not os.path.exists(outdir):
+            os.makedirs(outdir)
+
+        self.op_type = op_type
+        self.outdir = os.path.abspath(outdir)
+        self.correction_id = correction_id
+        self.creation_time = _get_timestamp()
+        self.quip_info = _get_quip_info()
+        self._files = []
+
+    @property
+    def input_files(self):
+        """List of input data filenames, with absolute paths."""
+        return self._files
+
+    @input_files.setter
+    def input_files(self, filelist):
+        if isinstance(filelist, str):
+            filelist = [filelist]
+        elif not isinstance(filelist, (list, tuple)):
+            raise ValueError('input_files must be a str or list of str')
+
+        self._files = []  # Reset
+
+        for filename in filelist:
+            # Too strict? Should we allow dummy filenames?
+            if os.path.isfile(filename):
+                self._files.append(filename)
+            else:
+                warnings.warn('Excluded {}; not a valid file'.format(filename),
+                              UserWarning)
+
+    def xml_dict(self):
+        """Create a dictionary that can be converted to
+        QUIP Operation File XML.
+
+        Returns
+        -------
+        out_dict : dict
+            Dictionary to be converted to XML by :meth:`write_xml`.
+
+        """
+        log_file_path = os.path.join(
+            self.outdir, '{}_quip_activity_log.xml'.format(self.correction_id))
+        out_file_path = os.path.join(
+            self.outdir, '{}_quip_out.xml'.format(self.correction_id))
+
+        d = {'@xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+             '@xsi:noNamespaceSchemaLocation': 'quip_operation_file.xsd'}
+        d.update(self.creation_time)
+        d.update(self.quip_info)
+        d['CORRECTION_ID'] = self.correction_id
+        d['OPERATION_TYPE'] = self.op_type
+        d['IMAGES'] = {'IMAGE_PATH': self.input_files}
+        d['OUTPUT'] = {'OUTPUT_DIRECTORY': self.outdir,
+                       'LOG_FILE_PATH': log_file_path,
+                       'OUT_FILE_PATH': out_file_path}
+
+        return {'QUIP_OPERATION_FILE': d}
+
+    def write_xml(self, filename):
+        """Write the QUIP Operation File XML file.
+        This is really just a convenience method that calls
+        :func:`~wss_tools.utils.io.output_xml`.
+
+        Parameters
+        ----------
+        filename : str
+            Output XML file.
+
+        Raises
+        ------
+        OSError
+            Output file exists.
+
+        """
+        from ..utils.io import output_xml
+        output_xml(self.xml_dict(), filename)
 
 
 # -------------- #
@@ -106,7 +231,7 @@ def quip_out_dict(images=[]):
     return {'QUIP_OUT': d}
 
 
-class QUIPLog(object):
+class QUIPLog:
     """Class to handle QUIP actions to document in log file
     and image history.
 
@@ -159,7 +284,7 @@ class QUIPLog(object):
         return {'QUIP_ACTIVITY_LOG': d}
 
 
-class QUIPLogEntry(object):
+class QUIPLogEntry:
     """Class to handle each log entry for `QUIPLog`.
 
     Parameters

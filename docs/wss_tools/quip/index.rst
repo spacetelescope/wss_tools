@@ -123,6 +123,7 @@ Below are some examples for specific operation types:
 .. toctree::
    :maxdepth: 2
 
+   usage_opfile
    usage_simple
    usage_segid
    usage_thumbs

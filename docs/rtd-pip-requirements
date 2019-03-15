@@ -1,6 +1,7 @@
 numpy>=1.13
 matplotlib
 Cython
+sphinx-rtd-theme
 sphinx-astropy
 astropy-helpers
 astropy
