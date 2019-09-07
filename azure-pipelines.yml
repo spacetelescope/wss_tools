@@ -24,6 +24,7 @@ jobs:
       architecture: 'x64'
 
   - script: |
+      sudo apt-get update
       sudo apt-get install libxml2-utils
       python -m pip install --upgrade pip setuptools
       pip install numpy astropy pytest pytest-astropy
