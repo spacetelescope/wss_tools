@@ -3,7 +3,6 @@ matplotlib
 Cython
 sphinx-rtd-theme
 sphinx-astropy
-astropy-helpers
 astropy
 ginga
 stginga
