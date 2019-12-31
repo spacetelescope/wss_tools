@@ -26,7 +26,8 @@ enable_deprecations_as_exceptions()
 # the tests. Making it pass for KeyError is essential in some cases when
 # the package uses other astropy affiliated packages.
 PYTEST_HEADER_MODULES['Astropy'] = 'astropy'
-PYTEST_HEADER_MODULES['scikit-image'] = 'skimage'
+PYTEST_HEADER_MODULES['Ginga'] = 'ginga'
+PYTEST_HEADER_MODULES['stginga'] = 'stginga'
 if 'h5py' in PYTEST_HEADER_MODULES:
     del PYTEST_HEADER_MODULES['h5py']
 
