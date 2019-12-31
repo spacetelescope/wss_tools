@@ -1,5 +1,10 @@
-1.0.1 (unreleased)
-------------------
+1.1 (unreleased)
+----------------
+
+* New ``SegIDHelper`` plugin. [#47]
+* Size of NIRCam SW images in Segment ID mode is now larger. [#47]
+* New functionality to generate operation files. [#55]
+* Infrastructure update in accordance to Astropy APE 17. [#65]
 
 1.0 (2018-11-08)
 ----------------
