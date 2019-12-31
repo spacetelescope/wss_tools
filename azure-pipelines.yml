@@ -12,28 +12,7 @@ jobs:
   pool:
     vmImage: 'Ubuntu-16.04'
   strategy:
-    matrix:
-      Python37:
-        python.version: '3.7'
     maxParallel: 4
-
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '$(python.version)'
-      architecture: 'x64'
-
-  - script: |
-      sudo apt-get update
-      sudo apt-get install libxml2-utils
-      python -m pip install --upgrade pip setuptools
-      pip install numpy astropy pytest pytest-astropy
-      python setup.py test
-    displayName: 'Run tests'
-
-- job: 'PEP8'
-  pool:
-    vmImage: 'Ubuntu-16.04'
 
   steps:
   - task: UsePythonVersion@0
@@ -42,7 +21,35 @@ jobs:
       architecture: 'x64'
 
   - script: |
+      sudo apt-get update
+      sudo apt-get install libxml2-utils
+      python -m pip install --upgrade pip setuptools wheel
+      pip install -e .[test]
+      pytest --pyargs wss_tools docs
+    displayName: 'Run tests'
+
+- job: 'PEP8'
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+  - task: UsePythonVersion@0
+
+  - script: |
       python -m pip install --upgrade pip setuptools
       pip install flake8
       flake8 wss_tools --count
     displayName: 'PEP 8 check'
+
+- job: 'PEP517'
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+  - task: UsePythonVersion@0
+
+  - script: |
+      python -m pip install --upgrade pip setuptools pep517 twine
+      python -m pep517.build --source .
+      twine check dist/*
+    displayName: 'PEP 517 check'

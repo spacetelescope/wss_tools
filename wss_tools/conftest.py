@@ -4,8 +4,18 @@
 
 import os
 
+try:
+    from pytest_astropy_header.display import (PYTEST_HEADER_MODULES,
+                                               TESTED_VERSIONS)
+except ImportError:
+    PYTEST_HEADER_MODULES = {}
+
+try:
+    from .version import version
+except ImportError:
+    version = 'unknown'
+
 from astropy.tests.helper import enable_deprecations_as_exceptions
-from astropy.tests.plugins.display import PYTEST_HEADER_MODULES, TESTED_VERSIONS
 
 # Uncomment the following line to treat all DeprecationWarnings as
 # exceptions
@@ -16,19 +26,13 @@ enable_deprecations_as_exceptions()
 # the tests. Making it pass for KeyError is essential in some cases when
 # the package uses other astropy affiliated packages.
 PYTEST_HEADER_MODULES['Astropy'] = 'astropy'
-PYTEST_HEADER_MODULES['scikit-image'] = 'skimage'
-del PYTEST_HEADER_MODULES['h5py']
+PYTEST_HEADER_MODULES['Ginga'] = 'ginga'
+PYTEST_HEADER_MODULES['stginga'] = 'stginga'
+if 'h5py' in PYTEST_HEADER_MODULES:
+    del PYTEST_HEADER_MODULES['h5py']
 
 # Uncomment the following lines to display the version number of the
 # package rather than the version number of Astropy in the top line when
 # running the tests.
-
-# This is to figure out the affiliated package version, rather than
-# using Astropy's
-try:
-    from .version import version
-except ImportError:
-    version = 'dev'
-
 packagename = os.path.basename(os.path.dirname(__file__))
 TESTED_VERSIONS[packagename] = version
