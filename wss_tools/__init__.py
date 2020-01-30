@@ -3,14 +3,11 @@
 Python tools for JWST Wavefront Sensing Software.
 """
 
-# Set up the version
-from pkg_resources import get_distribution, DistributionNotFound
-
-try:
-    __version__ = get_distribution(__name__).version
-except DistributionNotFound:
-    # package is not installed
-    __version__ = 'unknown'
+# Packages may add whatever they like to this file, but
+# should keep this content at the top.
+# ----------------------------------------------------------------------------
+from ._astropy_init import *  # noqa
+# ----------------------------------------------------------------------------
 
 # UI
 from . import utils  # noqa
