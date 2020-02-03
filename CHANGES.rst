@@ -1,4 +1,4 @@
-1.1 (unreleased)
+1.1 (2020-02-03)
 ----------------
 
 * New ``SegIDHelper`` plugin. [#47]
