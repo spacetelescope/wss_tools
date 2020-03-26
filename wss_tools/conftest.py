@@ -9,6 +9,7 @@ try:
                                                TESTED_VERSIONS)
 except ImportError:
     PYTEST_HEADER_MODULES = {}
+    TESTED_VERSIONS = {}
 
 try:
     from .version import version
@@ -28,8 +29,8 @@ enable_deprecations_as_exceptions()
 PYTEST_HEADER_MODULES['Astropy'] = 'astropy'
 PYTEST_HEADER_MODULES['Ginga'] = 'ginga'
 PYTEST_HEADER_MODULES['stginga'] = 'stginga'
-if 'h5py' in PYTEST_HEADER_MODULES:
-    del PYTEST_HEADER_MODULES['h5py']
+PYTEST_HEADER_MODULES.pop('Pandas')
+PYTEST_HEADER_MODULES.pop('h5py')
 
 # Uncomment the following lines to display the version number of the
 # package rather than the version number of Astropy in the top line when
