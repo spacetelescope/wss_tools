@@ -46,8 +46,8 @@ Anaconda::
 In that same environment, install the following dependencies from the
 AstroConda channel you added earlier::
 
-    conda install ginga>=2.7
-    conda install stginga>=1.0
+    conda install ginga
+    conda install stginga
 
 .. warning::
 
