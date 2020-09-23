@@ -49,7 +49,7 @@ jobs:
   - task: UsePythonVersion@0
 
   - script: |
-      python -m pip install --upgrade pip setuptools pep517 twine
-      python -m pep517.build --source .
+      python -m pip install --upgrade pip setuptools build twine
+      python -m build --sdist .
       twine check dist/*
     displayName: 'PEP 517 check'
