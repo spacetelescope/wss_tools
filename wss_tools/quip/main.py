@@ -16,7 +16,8 @@ from functools import partial
 
 # THIRD-PARTY
 from astropy.io import fits
-from astropy.utils.data import get_pkg_data_filenames
+from astropy.utils.data import get_pkg_data_filename, get_pkg_data_filenames
+from astropy.utils.introspection import minversion
 
 # GINGA and STGINGA
 from ginga.rv import main as gmain
@@ -35,7 +36,7 @@ except AttributeError:
     pass
 
 __all__ = ['main', 'get_ginga_plugins', 'copy_ginga_files', 'set_ginga_config',
-           'shrink_input_images']
+           'shrink_input_images', 'shrink_input_images_with_dq']
 __taskname__ = 'QUIP'
 _operational = 'false'  # 'true' or 'false'
 _tempdirname = 'quipcache'  # Sub-dir to store temporary intermediate files
@@ -43,6 +44,8 @@ _iswin = platform.system() == 'Windows'
 _home = None
 QUIP_DIRECTIVE = None  # Store info from input XML
 QUIP_LOG = None  # Store info for output log XML
+
+STGINGA_GT_1_2 = minversion('stginga', '1.2.1')
 
 # Set HOME directory
 if 'HOME' in os.environ:
@@ -172,7 +175,12 @@ def main(args):
         if n_cores is None:
             n_cores = min(multiprocessing.cpu_count(), len(images))
 
-        images = shrink_input_images(
+        if STGINGA_GT_1_2:
+            shrink_func = shrink_input_images_with_dq
+        else:
+            shrink_func = shrink_input_images
+
+        images = shrink_func(
             images, ext=sci_ext, new_width=thumb_width, n_cores=n_cores,
             outpath=tempdir)
 
@@ -420,6 +428,86 @@ def shrink_input_images(images, outpath='', new_width=500, n_cores=1,
             result = p.map(func, images)
         outlist = [s for s in result if s]
 
+    return outlist
+
+
+def shrink_input_images_with_dq(images, outpath='', new_width=100, **kwargs):
+    """Shrink input images for mosaic, if necessary.
+
+    The shrunken images are not deleted on exit;
+    User has to remove them manually.
+
+    Parameters
+    ----------
+    images : list
+        List of input image files.
+
+    outpath : str
+        Output directory. This must be different from input
+        directory because image names remain the same.
+
+    new_width : int
+        Width of the shrunken image. Height will be scaled accordingly.
+
+    kwargs : dict
+        Optional keywords for :func:`~stginga.utils.scale_image_with_dq`.
+
+    Returns
+    -------
+    outlist : list
+        List of images to use. If shrunken, the list will include
+        the new image in the ``outpath`` (same filename).
+        If the input is already small enough, shrinking process is
+        skipped and the list will contain the input image instead.
+
+    """
+    from stginga.utils import scale_image_with_dq, DQParser
+
+    outpath = os.path.abspath(outpath)
+    debug = kwargs.get('debug', False)
+
+    # Use same extension as scale image.
+    if 'sci_ext' in kwargs:
+        ext = kwargs['ext']
+    else:
+        ext = ('SCI', 1)
+        kwargs['sci_ext'] = ext
+
+    # Use default JWST DQ definition
+    dq_parser = DQParser(get_pkg_data_filename(
+        os.path.join('data', 'dqflags_jwst.txt'), package='stginga'))
+
+    def _shrink_one(infile):
+        with fits.open(infile) as pf:
+            old_height = pf[ext].data.shape[0]
+            old_width = pf[ext].data.shape[1]  # (ny, nx)
+
+        # Shrink it.
+        if old_width > new_width:
+            path, fname = os.path.split(infile)
+
+            # Skipping instead of just returning the input image
+            # because want to avoid mosaicking large images.
+            if os.path.abspath(path) == outpath:
+                print('Input and output directories are the same: '
+                      '{0}; Skipping {1}'.format(outpath, fname))
+                outfile = ''
+            else:
+                outfile = os.path.join(outpath, fname)
+                new_height = old_height * (new_width / old_width)
+                scale_image_with_dq(infile, outfile, (new_height, new_width),
+                                    dq_parser, **kwargs)
+
+        # Input already small enough.
+        else:
+            outfile = infile
+            if debug:
+                print('{0} has width {1} <= {2}; Using input '
+                      'file'.format(infile, old_width, new_width))
+
+        return outfile
+
+    outlist = [s for s in map(_shrink_one, images) if s]
     return outlist
 
 
