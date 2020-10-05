@@ -479,7 +479,6 @@ def shrink_input_images_with_dq(images, outpath='', new_width=100, **kwargs):
 
     def _shrink_one(infile):
         with fits.open(infile) as pf:
-            old_height = pf[ext].data.shape[0]
             old_width = pf[ext].data.shape[1]  # (ny, nx)
 
         # Shrink it.
@@ -494,9 +493,9 @@ def shrink_input_images_with_dq(images, outpath='', new_width=100, **kwargs):
                 outfile = ''
             else:
                 outfile = os.path.join(outpath, fname)
-                new_height = old_height * (new_width / old_width)
-                scale_image_with_dq(infile, outfile, (new_height, new_width),
-                                    dq_parser, **kwargs)
+                zoom_factor = new_width / old_width
+                scale_image_with_dq(infile, outfile, zoom_factor, dq_parser,
+                                    **kwargs)
 
         # Input already small enough.
         else:
