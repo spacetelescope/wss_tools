@@ -113,7 +113,7 @@ def main(args):
         copy_ginga_files()
 
     thumb_width = 500
-    n_cores = multiprocessing.cpu_count()
+    n_cores = None
 
     for i, a in enumerate(args):
         # Ignore any custom log file provided by user
@@ -167,6 +167,10 @@ def main(args):
         with fits.open(images[0]) as pf:
             if sci_ext not in pf:
                 sci_ext = ('IMAGE', 1)
+
+        # Auto guess the number of CPU cores needed.
+        if n_cores is None:
+            n_cores = min(multiprocessing.cpu_count(), len(images))
 
         images = shrink_input_images(
             images, ext=sci_ext, new_width=thumb_width, n_cores=n_cores,
