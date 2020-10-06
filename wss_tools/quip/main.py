@@ -7,18 +7,21 @@ For more information, see :ref:`running-quip-doc`.
 """
 # STDLIB
 import glob
+import multiprocessing
 import os
 import platform
 import shutil
 import sys
+from functools import partial
 
 # THIRD-PARTY
 from astropy.io import fits
 from astropy.utils.data import get_pkg_data_filenames
 
-# GINGA
+# GINGA and STGINGA
 from ginga.rv import main as gmain
 from ginga.misc.Bunch import Bunch
+from stginga.utils import scale_image
 
 # LOCAL
 from . import qio
@@ -58,8 +61,11 @@ def main(args):
 
     * ``--mosaic-thumb-size`` can be used to specify desired width in pixels
       for individual images to be mosaicked in ``THUMBNAIL`` mode.
-      If not given, the default width is 100 pixels, except for
-      Segment ID it's 256.
+      If not given, the default width is 500 pixels. For Segment ID,
+      the value is 256 regardless of this setting.
+    * ``--n-cores`` can be used to specify the number of CPU cores used when
+      rescaling images in ``THUMBNAIL`` mode. If not given, all available
+      cores will be used.
     * ``--nocopy`` can be used with QUIP to instruct
       it to *not* copy its Ginga files to user's HOME directory.
     * ``--log=filename``, if given in command line, will be ignored
@@ -106,7 +112,8 @@ def main(args):
     if not nocopy:
         copy_ginga_files()
 
-    thumb_width = 100
+    thumb_width = 500
+    n_cores = multiprocessing.cpu_count()
 
     for i, a in enumerate(args):
         # Ignore any custom log file provided by user
@@ -117,6 +124,13 @@ def main(args):
             args.pop(i)
             try:
                 thumb_width = int(a.split('=')[1])
+            except Exception:
+                pass  # Use default
+        # Num cores for THUMBNAIL mode
+        elif a.startswith('--n-cores='):
+            args.pop(i)
+            try:
+                n_cores = int(a.split('=')[1])
             except Exception:
                 pass  # Use default
 
@@ -145,17 +159,18 @@ def main(args):
     if op_type == 'thumbnail':
         cfgmode = 'mosaicmode'
         ginga_config_py_sfx = op_type
+        sci_ext = ('SCI', 1)
 
-        # Science array can have different EXTNAME values.
-        # Try SCI first (JWST/HST), then IMAGE (test).
-        try:
-            images = shrink_input_images(
-                images, ext=('SCI', 1), new_width=thumb_width,
-                outpath=tempdir)
-        except KeyError:
-            images = shrink_input_images(
-                images, ext=('IMAGE', 1), new_width=thumb_width,
-                outpath=tempdir)
+        # Science array can have different EXTNAME values:
+        #   SCI (JWST/HST) or IMAGE (test)
+        # Assume first image is representative of all the rest.
+        with fits.open(images[0]) as pf:
+            if sci_ext not in pf:
+                sci_ext = ('IMAGE', 1)
+
+        images = shrink_input_images(
+            images, ext=sci_ext, new_width=thumb_width, n_cores=n_cores,
+            outpath=tempdir)
 
     elif op_type == 'segment_id':
         cfgmode = 'mosaicmode'
@@ -315,7 +330,38 @@ def set_ginga_config(mode='normalmode', gcfg_suffix='normalmode',
         _do_copy(src, src.replace(sfx, ''), verbose=verbose)
 
 
-def shrink_input_images(images, outpath='', new_width=100, **kwargs):
+# Iterable (infile) must be last argument.
+def _shrink_one(outpath, ext, new_width, debug, kwargs, infile):
+    with fits.open(infile) as pf:
+        old_width = pf[ext].data.shape[1]  # (ny, nx)
+
+    # Shrink it.
+    if old_width > new_width:
+        path, fname = os.path.split(infile)
+
+        # Skipping instead of just returning the input image
+        # because want to avoid mosaicking large images.
+        if os.path.abspath(path) == outpath:
+            print('Input and output directories are the same: '
+                  '{0}; Skipping {1}'.format(outpath, fname))
+            outfile = ''
+        else:
+            outfile = os.path.join(outpath, fname)
+            zoom_factor = new_width / old_width
+            scale_image(infile, outfile, zoom_factor, **kwargs)
+
+    # Input already small enough.
+    else:
+        outfile = infile
+        if debug:
+            print('{0} has width {1} <= {2}; Using input '
+                  'file'.format(infile, old_width, new_width))
+
+    return outfile
+
+
+def shrink_input_images(images, outpath='', new_width=500, n_cores=1,
+                        **kwargs):
     """Shrink input images for mosaic, if necessary.
 
     The shrunken images are not deleted on exit;
@@ -336,6 +382,9 @@ def shrink_input_images(images, outpath='', new_width=100, **kwargs):
         :func:`~stginga.utils.scale_image`, requested width might not
         be the exact one that you get but should be close.
 
+    n_cores : int
+        Number of CPU cores to use.
+
     kwargs : dict
         Optional keywords for :func:`~stginga.utils.scale_image`.
 
@@ -348,8 +397,6 @@ def shrink_input_images(images, outpath='', new_width=100, **kwargs):
         skipped and the list will contain the input image instead.
 
     """
-    from stginga.utils import scale_image
-
     outpath = os.path.abspath(outpath)
     debug = kwargs.get('debug', False)
 
@@ -360,35 +407,15 @@ def shrink_input_images(images, outpath='', new_width=100, **kwargs):
         ext = ('SCI', 1)
         kwargs['ext'] = ext
 
-    def _shrink_one(infile):
-        with fits.open(infile) as pf:
-            old_width = pf[ext].data.shape[1]  # (ny, nx)
+    func = partial(_shrink_one, outpath, ext, new_width, debug, kwargs)
 
-        # Shrink it.
-        if old_width > new_width:
-            path, fname = os.path.split(infile)
+    if n_cores < 2:  # No multiprocessing
+        outlist = [s for s in map(func, images) if s]
+    else:
+        with multiprocessing.Pool(n_cores) as p:
+            result = p.map(func, images)
+        outlist = [s for s in result if s]
 
-            # Skipping instead of just returning the input image
-            # because want to avoid mosaicking large images.
-            if os.path.abspath(path) == outpath:
-                print('Input and output directories are the same: '
-                      '{0}; Skipping {1}'.format(outpath, fname))
-                outfile = ''
-            else:
-                outfile = os.path.join(outpath, fname)
-                zoom_factor = new_width / old_width
-                scale_image(infile, outfile, zoom_factor, **kwargs)
-
-        # Input already small enough.
-        else:
-            outfile = infile
-            if debug:
-                print('{0} has width {1} <= {2}; Using input '
-                      'file'.format(infile, old_width, new_width))
-
-        return outfile
-
-    outlist = [s for s in map(_shrink_one, images) if s]
     return outlist
 
 
@@ -420,8 +447,8 @@ def _segid_mosaics(images, sw_sca_size=256, **kwargs):
 def _main():
     """Run from command line."""
     if len(sys.argv) <= 1:
-        print('USAGE: quip operation_file.xml [--mosaic-thumb-size=100] '
-              '[--nocopy] [--help]')
+        print('USAGE: quip operation_file.xml [--mosaic-thumb-size=500] '
+              '[--n-cores=8] [--nocopy] [--help]')
     elif '--help' in sys.argv:
         from ginga.rv.main import reference_viewer
         reference_viewer(['ginga', '--help'])

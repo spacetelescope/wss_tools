@@ -1,6 +1,9 @@
 1.2 (unreleased)
 ----------------
 
+* Added ``--n-cores`` option for multiprocessing in downsampling images
+  in ``THUMBNAIL`` mode. [#72]
+
 1.1 (2020-02-03)
 ----------------
 
