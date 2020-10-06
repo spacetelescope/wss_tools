@@ -1,6 +1,10 @@
 1.2 (unreleased)
 ----------------
 
+* Added ``--n-cores`` option for multiprocessing in downsampling images
+  in ``THUMBNAIL`` mode. [#72]
+* Default size of THUMBNAIL images has increased from 100 to 500. [#72]
+
 1.1 (2020-02-03)
 ----------------
 
