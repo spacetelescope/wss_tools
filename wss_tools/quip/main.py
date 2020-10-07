@@ -22,7 +22,6 @@ from astropy.utils.introspection import minversion
 # GINGA and STGINGA
 from ginga.rv import main as gmain
 from ginga.misc.Bunch import Bunch
-from stginga.utils import scale_image, scale_image_with_dq
 
 # LOCAL
 from . import qio
@@ -176,12 +175,12 @@ def main(args):
             n_cores = min(multiprocessing.cpu_count(), len(images))
 
         if STGINGA_GT_1_2:
-            shrink_extra_kwargs = {'use_dq': True}
+            shrink_extra_kwargs = {'sci_ext': sci_ext, 'use_dq': True}
         else:
-            shrink_extra_kwargs = {}
+            shrink_extra_kwargs = {'ext': sci_ext}
 
         images = shrink_input_images(
-            images, ext=sci_ext, new_width=thumb_width, n_cores=n_cores,
+            images, new_width=thumb_width, n_cores=n_cores,
             outpath=tempdir, **shrink_extra_kwargs)
 
     elif op_type == 'segment_id':
@@ -344,6 +343,8 @@ def set_ginga_config(mode='normalmode', gcfg_suffix='normalmode',
 
 # Iterable (infile) must be last argument.
 def _shrink_one(outpath, ext, new_width, debug, kwargs, infile):
+    from stginga.utils import scale_image
+
     with fits.open(infile) as pf:
         old_width = pf[ext].data.shape[1]  # (ny, nx)
 
@@ -375,6 +376,8 @@ def _shrink_one(outpath, ext, new_width, debug, kwargs, infile):
 # Iterable (infile) must be last argument.
 def _shrink_one_with_dq(outpath, sci_ext, new_width, dq_parser, debug, kwargs,
                         infile):
+    from stginga.utils import scale_image_with_dq  # noqa
+
     with fits.open(infile) as pf:
         old_width = pf[sci_ext].data.shape[1]  # (ny, nx)
 
@@ -476,12 +479,21 @@ def shrink_input_images(images, outpath='', new_width=500, n_cores=1,
 
         func = partial(_shrink_one, outpath, ext, new_width, debug, kwargs)
 
+    if debug:
+        import time
+        t1 = time.time()
+
     if n_cores < 2:  # No multiprocessing
         outlist = [s for s in map(func, images) if s]
     else:
         with multiprocessing.Pool(n_cores) as p:
             result = p.map(func, images)
         outlist = [s for s in result if s]
+
+    if debug:
+        t2 = time.time()
+        print('Used {} cores for {} images. Ran in {:.3f} s.'.format(
+            n_cores, len(images), t2 - t1))
 
     return outlist
 
