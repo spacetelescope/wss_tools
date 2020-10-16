@@ -16,12 +16,12 @@ from functools import partial
 
 # THIRD-PARTY
 from astropy.io import fits
-from astropy.utils.data import get_pkg_data_filenames
+from astropy.utils.data import get_pkg_data_filename, get_pkg_data_filenames
+from astropy.utils.introspection import minversion
 
 # GINGA and STGINGA
 from ginga.rv import main as gmain
 from ginga.misc.Bunch import Bunch
-from stginga.utils import scale_image
 
 # LOCAL
 from . import qio
@@ -43,6 +43,8 @@ _iswin = platform.system() == 'Windows'
 _home = None
 QUIP_DIRECTIVE = None  # Store info from input XML
 QUIP_LOG = None  # Store info for output log XML
+
+STGINGA_GT_1_2 = minversion('stginga', '1.2.1')
 
 # Set HOME directory
 if 'HOME' in os.environ:
@@ -172,9 +174,14 @@ def main(args):
         if n_cores is None:
             n_cores = min(multiprocessing.cpu_count(), len(images))
 
+        if STGINGA_GT_1_2:
+            shrink_extra_kwargs = {'sci_ext': sci_ext, 'use_dq': True}
+        else:
+            shrink_extra_kwargs = {'ext': sci_ext}
+
         images = shrink_input_images(
-            images, ext=sci_ext, new_width=thumb_width, n_cores=n_cores,
-            outpath=tempdir)
+            images, new_width=thumb_width, n_cores=n_cores,
+            outpath=tempdir, **shrink_extra_kwargs)
 
     elif op_type == 'segment_id':
         cfgmode = 'mosaicmode'
@@ -336,6 +343,8 @@ def set_ginga_config(mode='normalmode', gcfg_suffix='normalmode',
 
 # Iterable (infile) must be last argument.
 def _shrink_one(outpath, ext, new_width, debug, kwargs, infile):
+    from stginga.utils import scale_image
+
     with fits.open(infile) as pf:
         old_width = pf[ext].data.shape[1]  # (ny, nx)
 
@@ -364,8 +373,42 @@ def _shrink_one(outpath, ext, new_width, debug, kwargs, infile):
     return outfile
 
 
+# Iterable (infile) must be last argument.
+def _shrink_one_with_dq(outpath, sci_ext, new_width, dq_parser, debug, kwargs,
+                        infile):
+    from stginga.utils import scale_image_with_dq  # noqa
+
+    with fits.open(infile) as pf:
+        old_width = pf[sci_ext].data.shape[1]  # (ny, nx)
+
+    # Shrink it.
+    if old_width > new_width:
+        path, fname = os.path.split(infile)
+
+        # Skipping instead of just returning the input image
+        # because want to avoid mosaicking large images.
+        if os.path.abspath(path) == outpath:
+            print('Input and output directories are the same: '
+                  '{0}; Skipping {1}'.format(outpath, fname))
+            outfile = ''
+        else:
+            outfile = os.path.join(outpath, fname)
+            zoom_factor = new_width / old_width
+            scale_image_with_dq(infile, outfile, zoom_factor, dq_parser,
+                                **kwargs)
+
+    # Input already small enough.
+    else:
+        outfile = infile
+        if debug:
+            print('{0} has width {1} <= {2}; Using input '
+                  'file'.format(infile, old_width, new_width))
+
+    return outfile
+
+
 def shrink_input_images(images, outpath='', new_width=500, n_cores=1,
-                        **kwargs):
+                        use_dq=False, **kwargs):
     """Shrink input images for mosaic, if necessary.
 
     The shrunken images are not deleted on exit;
@@ -389,8 +432,13 @@ def shrink_input_images(images, outpath='', new_width=500, n_cores=1,
     n_cores : int
         Number of CPU cores to use.
 
+    use_dq : bool
+        Use :func:`~stginga.utils.scale_image_with_dq` instead of
+        :func:`~stginga.utils.scale_image`.
+
     kwargs : dict
-        Optional keywords for :func:`~stginga.utils.scale_image`.
+        Optional keywords for the ``stginga`` function chosen using
+        ``use_dq`` keyword.
 
     Returns
     -------
@@ -404,14 +452,36 @@ def shrink_input_images(images, outpath='', new_width=500, n_cores=1,
     outpath = os.path.abspath(outpath)
     debug = kwargs.get('debug', False)
 
-    # Use same extension as scale image.
-    if 'ext' in kwargs:
-        ext = kwargs['ext']
-    else:
-        ext = ('SCI', 1)
-        kwargs['ext'] = ext
+    if use_dq:
+        from stginga.utils import DQParser
 
-    func = partial(_shrink_one, outpath, ext, new_width, debug, kwargs)
+        # Use same extension as scale_image_with_dq
+        if 'sci_ext' in kwargs:
+            ext = kwargs['sci_ext']
+        else:
+            ext = ('SCI', 1)
+            kwargs['sci_ext'] = ext
+
+        # Use default JWST DQ definition
+        dq_parser = DQParser(get_pkg_data_filename(
+            os.path.join('data', 'dqflags_jwst.txt'), package='stginga'))
+
+        func = partial(_shrink_one_with_dq, outpath, ext, new_width, dq_parser,
+                       debug, kwargs)
+
+    else:
+        # Use same extension as scale_image
+        if 'ext' in kwargs:
+            ext = kwargs['ext']
+        else:
+            ext = ('SCI', 1)
+            kwargs['ext'] = ext
+
+        func = partial(_shrink_one, outpath, ext, new_width, debug, kwargs)
+
+    if debug:
+        import time
+        t1 = time.time()
 
     if n_cores < 2:  # No multiprocessing
         outlist = [s for s in map(func, images) if s]
@@ -419,6 +489,11 @@ def shrink_input_images(images, outpath='', new_width=500, n_cores=1,
         with multiprocessing.Pool(n_cores) as p:
             result = p.map(func, images)
         outlist = [s for s in result if s]
+
+    if debug:
+        t2 = time.time()
+        print('Used {} cores for {} images. Ran in {:.3f} s.'.format(
+            n_cores, len(images), t2 - t1))
 
     return outlist
 
