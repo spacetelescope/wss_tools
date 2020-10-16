@@ -42,7 +42,7 @@ class NircamMosaic:
     >>> my_mosaic = NircamMosaic()
     >>> mosaiclist = my_mosaic.make_mosaic(images)
 
-    """
+    """  # noqa: E501
     _sca_size = 2048  # Actual dimension of a detector in pixels
     _sca_gap = 187.5  # Actual gap size between SW detectors in pixels
     _module_gap = 1250.0  # Actual gap size between modules in pixels
