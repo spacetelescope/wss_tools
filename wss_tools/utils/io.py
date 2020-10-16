@@ -14,7 +14,7 @@ __all__ = ['output_xml']
 # GENERIC XML FUNCTIONS #
 # --------------------- #
 
-# http://stackoverflow.com/questions/7684333/converting-xml-to-dictionary-using-elementtree
+# https://stackoverflow.com/questions/7684333/converting-xml-to-dictionary-using-elementtree
 def _etree_to_dict(t):
     """Convert XML element tree to dictionary."""
     d = {t.tag: {} if t.attrib else None}
@@ -37,7 +37,7 @@ def _etree_to_dict(t):
     return d
 
 
-# http://code.activestate.com/recipes/573463-converting-xml-to-dictionary-and-back/
+# https://code.activestate.com/recipes/573463-converting-xml-to-dictionary-and-back/
 def _dict_to_etree(parent, dictitem):
     """Convert dictionary to XML element tree."""
     assert not isinstance(dictitem, list)
@@ -62,7 +62,7 @@ def _dict_to_etree(parent, dictitem):
         parent.text = str(dictitem)
 
 
-# http://stackoverflow.com/questions/17402323/use-xml-etree-elementtree-to-write-out-nicely-formatted-xml-files
+# https://stackoverflow.com/questions/17402323/use-xml-etree-elementtree-to-write-out-nicely-formatted-xml-files
 def output_xml(xmldict, filename):
     """Write given dictionary to XML.
 

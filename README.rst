@@ -1,8 +1,8 @@
 WSS Tools
 =========
 
-.. image:: http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat
-    :target: http://www.astropy.org
+.. image:: https://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat
+    :target: https://www.astropy.org
     :alt: Powered by Astropy Badge
 
 .. image:: https://github.com/spacetelescope/wss_tools/workflows/CI/badge.svg
@@ -10,7 +10,7 @@ WSS Tools
     :alt: Github Actions CI Status
 
 .. image:: https://readthedocs.org/projects/wss-tools/badge/?version=latest
-    :target: http://wss-tools.readthedocs.io/en/latest/?badge=latest
+    :target: https://wss-tools.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
 

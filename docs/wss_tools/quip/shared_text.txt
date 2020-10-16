@@ -1,4 +1,4 @@
-.. _QUIP's package data: https://github.com/STScI-JWST/wss_tools/tree/master/wss_tools/quip/data
+.. _QUIP's package data: https://github.com/spacetelescope/wss_tools/tree/master/wss_tools/quip/data
 
 .. |gingahomewarn| replace:: To meet JWST Wavefront Sensing analysis needs, QUIP customizes Ginga by installing custom configuration files in your ``$HOME/.ginga`` directory. If the configuration files already exist, they will be overwritten. Please make a backup prior to running QUIP for the first time, if desired.
 
