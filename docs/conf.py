@@ -135,7 +135,7 @@ intersphinx_mapping.update({
 linkcheck_retry = 5
 linkcheck_ignore = ['https://confluence.stsci.edu']
 linkcheck_timeout = 180
-linkcheck_anchors = False
+linkcheck_anchors = True
 
 
 # This loads custom CSS to fix table column not wrapping

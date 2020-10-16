@@ -21,7 +21,7 @@ class NircamMosaic:
     https://confluence.stsci.edu/display/JWST/FPA+mosaic .
     However, V3 is upside-down in that document, so actual
     detector layout follows
-    https://jwst-docs.stsci.edu/display/JTI/NIRCam+Detectors .
+    https://jwst-docs.stsci.edu/near-infrared-camera/nircam-apt-templates/nircam-imaging-apt-template .
 
     .. note:: Currently does not support WCS.
 

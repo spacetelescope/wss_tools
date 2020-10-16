@@ -5,7 +5,7 @@ Installation
 
 Anaconda is the recommended Python distribution for ``wss_tools``.
 If you do not have it already,
-`download Anaconda <http://continuum.io/downloads>`_ and install it
+`download Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_ and install it
 (Python 3.6+ only). The instructions below
 assume you do *not* want ``wss_tools`` in your default Anaconda environment
 (``base``), but if you do want it, you can skip the part where you create a
