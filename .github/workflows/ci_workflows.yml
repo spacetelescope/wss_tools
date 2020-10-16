@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  schedule:
+    # Weekly Thursday 6 AM build
+    # * is a special character in YAML so you have to quote this string
+    - cron: '0 6 * * 4'
+
+jobs:
+  pep:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Fetch tags
+      run: git fetch --prune --unshallow --tags
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Lint with flake8
+      run: |
+        python -m pip install --upgrade pip flake8
+        flake8 wss_tools --count
+    # Make sure that packaging will work
+    - name: pep517 build
+      run: |
+        python -m pip install --upgrade setuptools build twine
+        python -m build --sdist .
+        twine check dist/*
+
+  tests:
+    runs-on: ubuntu-16.04
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Fetch tags
+      run: git fetch --prune --unshallow --tags
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'  # No numpy/scipy wheels for Python 3.9 yet
+    - name: Install and build
+      run: |
+        sudo apt-get update
+        sudo apt-get install libxml2-utils
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install -e .[test]
+    - name: Test
+      run: pytest
+
+  dev_deps_tests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Fetch tags
+      run: git fetch --prune --unshallow --tags
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'  # No numpy/scipy wheels for Python 3.9 yet
+    - name: Install and build
+      run: |
+        sudo apt-get update
+        sudo apt-get install libxml2-utils
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install git+https://github.com/astropy/astropy.git@master#egg=astropy
+        python -m pip install git+https://github.com/ejeschke/ginga.git@master#egg=ginga
+        python -m pip install git+https://github.com/spacetelescope/stginga.git@master#egg=stginga
+        python -m pip install -e .[test]
+    - name: Test with dev deps
+      run: pytest
+
+  link_check:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'schedule' }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'  # No numpy/scipy wheels for Python 3.9 yet
+    - name: Install and build
+      run: |
+        python -m pip install --upgrade pip setuptools wheel sphinx-astropy
+        python -m pip install -e .
+    - name: Docs link check
+      run: |
+        cd docs
+        make linkcheck
+      shell: bash

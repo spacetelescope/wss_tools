@@ -21,7 +21,7 @@ class NircamMosaic:
     https://confluence.stsci.edu/display/JWST/FPA+mosaic .
     However, V3 is upside-down in that document, so actual
     detector layout follows
-    https://jwst-docs.stsci.edu/display/JTI/NIRCam+Detectors .
+    https://jwst-docs.stsci.edu/near-infrared-camera/nircam-apt-templates/nircam-imaging-apt-template .
 
     .. note:: Currently does not support WCS.
 
@@ -42,7 +42,7 @@ class NircamMosaic:
     >>> my_mosaic = NircamMosaic()
     >>> mosaiclist = my_mosaic.make_mosaic(images)
 
-    """
+    """  # noqa: E501
     _sca_size = 2048  # Actual dimension of a detector in pixels
     _sca_gap = 187.5  # Actual gap size between SW detectors in pixels
     _module_gap = 1250.0  # Actual gap size between modules in pixels

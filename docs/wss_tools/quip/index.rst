@@ -41,7 +41,7 @@ During the development phase, sometimes unintentional bugs might cause Ginga
 to produce segmentation fault. When this happens, you can do the following
 using `GDB <https://www.gnu.org/software/gdb/>`_ to get the traceback and
 report it to
-`wss_tools' GitHub issues <https://github.com/STScI-JWST/wss_tools/issues>`_::
+`wss_tools' GitHub issues <https://github.com/spacetelescope/wss_tools/issues>`_::
 
     $ gdb
     (gdb) file python
