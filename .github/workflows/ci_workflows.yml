@@ -44,8 +44,6 @@ jobs:
         python-version: '3.x'
     - name: Install and build
       run: |
-        sudo apt-get update
-        sudo apt-get install libxml2-utils
         python -m pip install --upgrade pip setuptools wheel
         python -m pip install -e .[test]
     - name: Test
@@ -64,7 +62,6 @@ jobs:
         python-version: '3.x'
     - name: Install and build
       run: |
-        sudo apt-get install libxml2-utils
         python -m pip install --upgrade pip setuptools
         python -m pip install git+https://github.com/astropy/astropy.git@master#egg=astropy
         python -m pip install git+https://github.com/ejeschke/ginga.git@master#egg=ginga
@@ -73,10 +70,10 @@ jobs:
     - name: Test with dev deps
       run: pytest
 
-  # Repo is low-activity enough that this should be okay to live here.
-  # If repo becomes too active, move this to a cron-only workflow file.
+  # FIX ME: Uncomment for cron only
   link_check:
     runs-on: ubuntu-latest
+    # if: ${{ github.event_name == 'schedule' }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
