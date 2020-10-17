@@ -81,11 +81,11 @@ class MosaicAuto(MosaicAutoParent):
             if is_found:
                 keep_list.append(realpath)
             else:
-                self.logger.error('{0} not found in operation file'.format(im))
+                self.logger.error(f'{im} not found in operation file')
                 ignored_list.append(im)
 
         images = sorted(set(keep_list))
-        self.logger.info('Saving {0}'.format(outfile))
+        self.logger.info(f'Saving {outfile}')
 
         # Save QUIP out file XML
         try:
@@ -97,7 +97,7 @@ class MosaicAuto(MosaicAutoParent):
             return
 
         if len(ignored_list) > 0:
-            self.logger.info('Ignored {0}'.format(','.join(ignored_list)))
+            self.logger.info(f"Ignored {','.join(ignored_list)}")
             extra_msg = ', ignored file(s)'
         else:
             extra_msg = ''

@@ -101,7 +101,7 @@ class QUIPOpFile:
 
         if op_type not in valid_op_types:
             raise ValueError(
-                'Valid operation types: {}'.format(','.join(valid_op_types)))
+                f"Valid operation types: {','.join(valid_op_types)}")
 
         if create_outdir and not os.path.exists(outdir):
             os.makedirs(outdir)
@@ -132,7 +132,7 @@ class QUIPOpFile:
             if os.path.isfile(filename):
                 self._files.append(filename)
             else:
-                warnings.warn('Excluded {}; not a valid file'.format(filename),
+                warnings.warn(f'Excluded {filename}; not a valid file',
                               UserWarning)
 
     def xml_dict(self):
@@ -146,9 +146,9 @@ class QUIPOpFile:
 
         """
         log_file_path = os.path.join(
-            self.outdir, '{}_quip_activity_log.xml'.format(self.correction_id))
+            self.outdir, f'{self.correction_id}_quip_activity_log.xml')
         out_file_path = os.path.join(
-            self.outdir, '{}_quip_out.xml'.format(self.correction_id))
+            self.outdir, f'{self.correction_id}_quip_out.xml')
 
         d = {'@xmlns:xsi': 'https://www.w3.org/2001/XMLSchema-instance',
              '@xsi:noNamespaceSchemaLocation': 'quip_operation_file.xsd'}
@@ -276,8 +276,7 @@ class QUIPLog:
             en_d.update(en.xml_dict)
 
             # DISABLED: Because description is now already the image name
-            # en_d['ENTRY_DESCRIPTION'] = '{0}: {1}'.format(
-            #     en.imname, en_d['ENTRY_DESCRIPTION'])
+            # en_d['ENTRY_DESCRIPTION'] = f'{en.imname}: {en_d['ENTRY_DESCRIPTION']}'  # noqa
 
             d['LOG_ENTRY'].append(en_d)
 
@@ -322,8 +321,8 @@ class QUIPLogEntry:
         _valid_etypes = ('status', 'warning', 'error', 'data')
 
         if etype not in _valid_etypes:
-            raise ValueError('Invalid entry type ({0}), must be one of '
-                             '{1}'.format(etype, _valid_etypes))
+            raise ValueError(f'Invalid entry type ({etype}), must be one of '
+                             f'{_valid_etypes}')
         self.imname = imname
         self.xml_dict = {
             'ENTRY_DESCRIPTION': descrip,

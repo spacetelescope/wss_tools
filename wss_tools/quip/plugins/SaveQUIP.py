@@ -154,14 +154,14 @@ class SaveQUIP(SaveImageParent):
             history_obj = self.fv.gpmon.getPlugin(history_plgname)
         except Exception:
             self.logger.error(
-                '{0} plugin is not loaded. No {1} will be '
-                'written.'.format(history_plgname, self.logfile))
+                f'{history_plgname} plugin is not loaded. '
+                f'No {self.logfile} will be written.')
             return
 
         if channel.name not in history_obj.name_dict:
             self.logger.error(
-                '{0} channel not found in {1}. No {2} will be '
-                'written.'.format(channel.name, history_plgname, self.logfile))
+                f'{channel.name} channel not found in {history_plgname}. '
+                f'No {self.logfile} will be written.')
             return
 
         file_dict = history_obj.name_dict[channel.name]
@@ -206,13 +206,13 @@ class SaveQUIP(SaveImageParent):
             outfile = os.path.join(self.outdir, oname)
 
             self.w.status.set_text(
-                'Writing out {0} to {1} ...'.format(shorten_name(infile, 10),
-                                                    shorten_name(oname, 10)))
+                f'Writing out {shorten_name(infile, 10)} to '
+                f'{shorten_name(oname, 10)} ...')
             self.logger.debug(
-                'Writing out {0} to {1} ...'.format(infile, oname))
+                f'Writing out {infile} to {oname} ...')
 
             if os.path.exists(outfile) and not clobber:
-                self.logger.error('{0} already exists'.format(outfile))
+                self.logger.error(f'{outfile} already exists')
                 continue
 
             bnch = res_dict[infile]
@@ -224,10 +224,10 @@ class SaveQUIP(SaveImageParent):
                 self._write_mef(f_pfx, bnch.extlist, outfile)
 
             output_images.append(outfile)
-            self.logger.info('{0} written'.format(outfile))
+            self.logger.info(f'{outfile} written')
 
         # Save QUIP Log, which stores change history
-        self.logger.info('Saving {0}'.format(self.logfile))
+        self.logger.info(f'Saving {self.logfile}')
         try:
             self._write_quiplog()
         except Exception as e:
@@ -236,7 +236,7 @@ class SaveQUIP(SaveImageParent):
             return
 
         # Save QUIP Out, which stores output image list
-        self.logger.info('Saving {0}'.format(self.stafile))
+        self.logger.info(f'Saving {self.stafile}')
         try:
             output_xml(quip_out_dict(images=output_images), self.stafile)
         except Exception as e:
