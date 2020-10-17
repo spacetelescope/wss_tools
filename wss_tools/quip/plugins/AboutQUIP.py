@@ -71,8 +71,7 @@ class AboutQUIP(GlobalPlugin):
         container.add_widget(top, stretch=1)
 
     def info_string(self):
-        return '{0}\nOperation: {1}\nVersion: {2}'.format(
-            self.taskname, self.op_type, self.version)
+        return f'{self.taskname}\nOperation: {self.op_type}\nVersion: {self.version}'  # noqa: E501
 
     def close(self):
         self.fv.stop_global_plugin(str(self))

@@ -107,7 +107,7 @@ class NircamMosaic:
         elif key == 'SHORT':
             pos = 'bottom'
         else:
-            raise ValueError('Undefined mosaic position for {0}'.format(key))
+            raise ValueError(f'Undefined mosaic position for {key}')
         return pos
 
     def _single_sw_module(self, images):
@@ -275,19 +275,19 @@ class NircamMosaic:
         def _mosaic_one(rootname):
             imlist = root_list[rootname]
             outname = os.path.join(
-                outpath, '{0}_{1}.fits'.format(rootname, outsuffix))
+                outpath, f'{rootname}_{outsuffix}.fits')
 
             # Avoid regenerating mosaic if already exist.
             # This also avoids crashing at the very end.
             if not clobber and os.path.exists(outname):
                 if debug:
-                    print('Using existing {0}'.format(outname))
+                    print(f'Using existing {outname}')
                 return outname
 
             mosaic = self.get_single_mosaic_array(imlist)
             if mosaic is None:
                 if debug:
-                    print('No mosaic for {0}'.format(imlist))
+                    print(f'No mosaic for {imlist}')
                 return ''
 
             hdu = fits.PrimaryHDU(mosaic)
@@ -300,7 +300,7 @@ class NircamMosaic:
                     continue
                 hdu.header[key] = prihdr[key]
 
-            hdu.header.add_history('Mosaic from {0}'.format(','.join(imlist)))
+            hdu.header.add_history(f"Mosaic from {','.join(imlist)}")
             if minversion(astropy, '1.3'):
                 hdu.writeto(outname, overwrite=clobber)
             else:
@@ -337,6 +337,6 @@ def _insert_image(position, dat, mosaic):
         y2 = mosaic.shape[0]
         y1 = y2 - dat.shape[0]
     else:
-        raise ValueError('Invalid position ({0})'.format(position))
+        raise ValueError(f'Invalid position ({position})')
 
     mosaic[y1:y2, x1:x2] = dat

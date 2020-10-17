@@ -1,6 +1,8 @@
 1.2 (unreleased)
 ----------------
 
+This requires Python 3.7 or later. [#74]
+
 * Added ``--n-cores`` option for multiprocessing in downsampling images
   in ``THUMBNAIL`` mode. [#72]
 * Default size of THUMBNAIL images has increased from 100 to 500. [#72]

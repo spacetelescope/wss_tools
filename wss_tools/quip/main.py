@@ -95,7 +95,7 @@ def main(args):
     inputxml = args.pop(0)
 
     if not os.path.exists(inputxml):
-        raise OSError('{0} does not exist'.format(inputxml))
+        raise OSError(f'{inputxml} does not exist')
 
     # Validate input XML (compare return code and display stderr if fails).
     # Skipped for Windows because no xmllint.
@@ -208,7 +208,7 @@ def main(args):
         gplg.start = True
 
     # Start Ginga
-    sys_args = ['ginga', '--log={0}'.format(gingalog)] + args + images
+    sys_args = ['ginga', f'--log={gingalog}'] + args + images
     gmain.reference_viewer(sys_args)
 
 
@@ -356,7 +356,7 @@ def _shrink_one(outpath, ext, new_width, debug, kwargs, infile):
         # because want to avoid mosaicking large images.
         if os.path.abspath(path) == outpath:
             print('Input and output directories are the same: '
-                  '{0}; Skipping {1}'.format(outpath, fname))
+                  f'{outpath}; Skipping {fname}')
             outfile = ''
         else:
             outfile = os.path.join(outpath, fname)
@@ -367,8 +367,8 @@ def _shrink_one(outpath, ext, new_width, debug, kwargs, infile):
     else:
         outfile = infile
         if debug:
-            print('{0} has width {1} <= {2}; Using input '
-                  'file'.format(infile, old_width, new_width))
+            print(f'{infile} has width {old_width} <= {new_width}; '
+                  'Using input file')
 
     return outfile
 
@@ -389,7 +389,7 @@ def _shrink_one_with_dq(outpath, sci_ext, new_width, dq_parser, debug, kwargs,
         # because want to avoid mosaicking large images.
         if os.path.abspath(path) == outpath:
             print('Input and output directories are the same: '
-                  '{0}; Skipping {1}'.format(outpath, fname))
+                  f'{outpath}; Skipping {fname}')
             outfile = ''
         else:
             outfile = os.path.join(outpath, fname)
@@ -401,8 +401,8 @@ def _shrink_one_with_dq(outpath, sci_ext, new_width, dq_parser, debug, kwargs,
     else:
         outfile = infile
         if debug:
-            print('{0} has width {1} <= {2}; Using input '
-                  'file'.format(infile, old_width, new_width))
+            print(f'{infile} has width {old_width} <= {new_width}; '
+                  'Using input file')
 
     return outfile
 
@@ -492,8 +492,8 @@ def shrink_input_images(images, outpath='', new_width=500, n_cores=1,
 
     if debug:
         t2 = time.time()
-        print('Used {} cores for {} images. Ran in {:.3f} s.'.format(
-            n_cores, len(images), t2 - t1))
+        print(f'Used {n_cores} cores for {len(images)} images. '
+              f'Ran in {t2 - t1:.3f} s.')
 
     return outlist
 
@@ -536,6 +536,6 @@ def _main():
             from ..version import version
         except ImportError:
             version = 'unknown'
-        print('{0} v{1}'.format(__taskname__, version))
+        print(f'{__taskname__} v{version}')
     else:
         main(sys.argv[1:])

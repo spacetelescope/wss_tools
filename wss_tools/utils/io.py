@@ -88,7 +88,7 @@ def output_xml(xmldict, filename):
     reparsed = minidom.parseString(rough_string)
 
     if os.path.exists(filename):
-        raise OSError('{0} exists'.format(filename))
+        raise OSError(f'{filename} exists')
 
     with open(filename, 'w') as fout:
         fout.write(reparsed.toprettyxml(indent='    '))
