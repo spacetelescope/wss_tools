@@ -150,7 +150,7 @@ class QUIPOpFile:
         out_file_path = os.path.join(
             self.outdir, f'{self.correction_id}_quip_out.xml')
 
-        d = {'@xmlns:xsi': 'https://www.w3.org/2001/XMLSchema-instance',
+        d = {'@xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
              '@xsi:noNamespaceSchemaLocation': 'quip_operation_file.xsd'}
         d.update(self.creation_time)
         d.update(self.quip_info)

@@ -1,7 +1,27 @@
 import glob
 import os
 
+from astropy.utils.data import get_pkg_data_filename
+
 from wss_tools.quip import qio
+
+
+def test_opfile_validation():
+    filename = get_pkg_data_filename('data/operation_file_001.xml')
+    returncode, _, _ = qio.validate_input_xml(filename)
+    assert returncode == 0
+
+
+def test_validate_output_out_xml():
+    filename = get_pkg_data_filename('data/quip_out_001.xml')
+    returncode, _, _ = qio.validate_output_out_xml(filename)
+    assert returncode == 0
+
+
+def test_validate_output_log_xml():
+    filename = get_pkg_data_filename('data/quip_activity_log_001.xml')
+    returncode, _, _ = qio.validate_output_log_xml(filename)
+    assert returncode == 0
 
 
 def test_opfile_gen(tmpdir):

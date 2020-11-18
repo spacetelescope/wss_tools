@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<QUIP_ACTIVITY_LOG date="2020-11-18Z" time="18:56:32.622808Z" creator="QUIP" version="1.2.dev20+g01c28ec" operational="false">
+    <LOG_ENTRY id="1" type="status" date="2020-11-18Z" time="19:03:29Z">
+        <ENTRY_DESCRIPTION>image[SCI,1]</ENTRY_DESCRIPTION>
+        <ENTRY_DATA>10.0 subtracted from image[SCI,1] (x=100, y=200, r=77.7, dannulus=10, bgval=10.0, salgo=median, sigma=1.8, niter=10, ignore_badpix=False)</ENTRY_DATA>
+    </LOG_ENTRY>
+</QUIP_ACTIVITY_LOG>
