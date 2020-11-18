@@ -6,6 +6,8 @@ This requires Python 3.7 or later. [#74]
 * Added ``--n-cores`` option for multiprocessing in downsampling images
   in ``THUMBNAIL`` mode. [#72]
 * Default size of THUMBNAIL images has increased from 100 to 500. [#72]
+* Fixed ``quip_activity_log.xsd`` so that it can validate
+  ``quip_activity_log.xml`` properly. [#75]
 
 1.1 (2020-02-03)
 ----------------

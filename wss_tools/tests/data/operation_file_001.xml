@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<QUIP_OPERATION_FILE xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" creator="Test" time="19:56:56.934Z" date="2015-01-14Z" version="4.0" operational="false" xsi:noNamespaceSchemaLocation="quip_operation_file.xsd">
+    <CORRECTION_ID>R2015011401</CORRECTION_ID>
+    <OPERATION_TYPE>MIMF</OPERATION_TYPE>
+    <IMAGES>
+        <IMAGE_PATH>/path/to/inputs/image001.fits</IMAGE_PATH>
+        <IMAGE_PATH>/path/to/inputs/image002.fits</IMAGE_PATH>
+    </IMAGES>
+    <OUTPUT>
+        <OUTPUT_DIRECTORY>/path/to/outputs/</OUTPUT_DIRECTORY>
+        <LOG_FILE_PATH>/path/to/outputs/quip_activity_log.xml</LOG_FILE_PATH>
+        <OUT_FILE_PATH>/path/to/outputs/quip_out.xml</OUT_FILE_PATH>
+    </OUTPUT>
+</QUIP_OPERATION_FILE>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="https://www.w3.org/2001/XMLSchema"
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
   elementFormDefault="qualified">
 
   <xs:element name="QUIP_ACTIVITY_LOG">
@@ -17,8 +17,8 @@
   <xs:element name="LOG_ENTRY">
     <xs:complexType>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="ENTRY_DATA"/>
         <xs:element ref="ENTRY_DESCRIPTION"/>
+        <xs:element maxOccurs="unbounded" ref="ENTRY_DATA"/>
       </xs:sequence>
       <xs:attribute name="date" use="required" type="xs:date"/>
       <xs:attribute name="id" use="required" type="xs:integer"/>
@@ -26,6 +26,7 @@
       <xs:attribute name="type" use="required" type="log_types"/>
     </xs:complexType>
   </xs:element>
+  <xs:element name="ENTRY_DESCRIPTION" type="xs:string"/>
   <xs:element name="ENTRY_DATA">
     <xs:complexType mixed="true">
       <xs:sequence>
@@ -52,7 +53,6 @@
       </xs:simpleContent>
     </xs:complexType>
   </xs:element>
-  <xs:element name="ENTRY_DESCRIPTION" type="xs:string"/>
 
   <!-- Data types -->
 
