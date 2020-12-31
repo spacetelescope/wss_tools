@@ -19,8 +19,25 @@ on:
     branches: [ master ]
 
 jobs:
+  cancel_ci:
+    name: Failure means CI cancelled on purpose
+    runs-on: ubuntu-latest
+    steps:
+    - name: Failure means CI is skipped on purpose
+      uses: pllim/action-skip-ci@main
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # This should only run if we did not skip CI
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@ce17749
+      with:
+        access_token: ${{ secrets.GITHUB_TOKEN }}
+
+  # The rest only run if above are done
+
   analyze:
     name: Analyze
+    needs: cancel_ci
     runs-on: ubuntu-latest
 
     strategy:
