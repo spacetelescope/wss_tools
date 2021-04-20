@@ -51,8 +51,8 @@ class SNRCalc(SNRCalcParent):
             else:
                 val = 0
 
-        elif self.op_type in ('PUPIL_IMAGING', 'COARSE_PHASING', 'FINE_PHASING',
-        'WAVEFRONT_MAINTENANCE'):
+        elif self.op_type in ('PUPIL_IMAGING', 'COARSE_PHASING',
+                              'FINE_PHASING', 'WAVEFRONT_MAINTENANCE'):
             val = 1500
 
         elif self.op_type in (
