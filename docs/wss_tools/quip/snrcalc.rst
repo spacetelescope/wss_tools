@@ -13,7 +13,7 @@ except that SBR lower limits are customized based on QUIP operation type
 whether the image being analyzed is acceptable. These numbers are
 subject to change:
 
-.. image:: images/sbr_limits_20150519.png
+.. image:: images/table_sbr_20210420.png
    :width: 600 px
    :align: center
    :alt: SBR lower limits
