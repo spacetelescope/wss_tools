@@ -51,7 +51,8 @@ class SNRCalc(SNRCalcParent):
             else:
                 val = 0
 
-        elif self.op_type in ('FINE_PHASING', 'WAVEFRONT_MAINTENANCE'):
+        elif self.op_type in ('PUPIL_IMAGING', 'COARSE_PHASING',
+                              'FINE_PHASING', 'WAVEFRONT_MAINTENANCE'):
             val = 1500
 
         elif self.op_type in (
@@ -60,12 +61,6 @@ class SNRCalc(SNRCalcParent):
                 'FVA_COARSE_MIMF', 'IMAGE_STACKING',
                 'FVA_FIELD_VIGNETTING_SCAN'):
             val = 500
-
-        elif self.op_type == 'COARSE_PHASING':
-            val = 30
-
-        elif self.op_type == 'PUPIL_IMAGING':
-            val = 25
 
         else:
             val = 0
