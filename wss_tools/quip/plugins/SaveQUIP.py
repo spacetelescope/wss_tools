@@ -56,15 +56,6 @@ class SaveQUIP(SaveImageParent):
 
         vbox, sw, orientation = Widgets.get_oriented_box(container)
 
-        msgFont = self.fv.getFont('sansFont', 12)
-        tw = Widgets.TextArea(wrap=True, editable=False)
-        tw.set_font(msgFont)
-        self.tw = tw
-
-        fr = Widgets.Expander('Instructions')
-        fr.set_widget(tw)
-        container.add_widget(fr, stretch=0)
-
         captions = (('Channel:', 'label', 'Channel Name', 'combobox',
                      'Modified only', 'checkbutton'), )
         w, b = Widgets.build_info(captions, orientation=orientation)
@@ -130,6 +121,9 @@ class SaveQUIP(SaveImageParent):
 
         btn = Widgets.Button('Close')
         btn.add_callback('activated', lambda w: self.close())
+        btns.add_widget(btn, stretch=0)
+        btn = Widgets.Button("Help")
+        btn.add_callback('activated', lambda w: self.help())
         btns.add_widget(btn, stretch=0)
         btns.add_widget(Widgets.Label(''), stretch=1)
         container.add_widget(btns, stretch=0)
