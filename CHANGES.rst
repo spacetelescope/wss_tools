@@ -1,13 +1,17 @@
-1.2 (unreleased)
+1.2 (2021-06-11)
 ----------------
 
 This requires Python 3.7 or later. [#74]
 
+This release should be compatible with Ginga 3.2 and stginga 1.3.
+
+* Downsampling of images now take DQ into account. [#70]
 * Added ``--n-cores`` option for multiprocessing in downsampling images
   in ``THUMBNAIL`` mode. [#72]
 * Default size of THUMBNAIL images has increased from 100 to 500. [#72]
 * Fixed ``quip_activity_log.xsd`` so that it can validate
   ``quip_activity_log.xml`` properly. [#75]
+* Minimum SBR for Pupil Imaging and CP is now 1500. [#83]
 
 1.1 (2020-02-03)
 ----------------
