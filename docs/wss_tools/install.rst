@@ -19,18 +19,14 @@ is not recommended)::
     conda create -n wssenv python=3.8
     conda activate wssenv
 
-In the environment above, install the following dependencies directly from
-Anaconda::
-
-    conda install astropy
-    conda install scipy
-    conda install pyqt
-    conda install matplotlib
-    conda install pillow
-
 In that same environment, install the following dependencies from the
 ``conda-forge`` channel::
 
+    conda install astropy -c conda-forge
+    conda install scipy -c conda-forge
+    conda install pyqt -c conda-forge
+    conda install matplotlib -c conda-forge
+    conda install pillow -c conda-forge
     conda install ginga -c conda-forge
     conda install stginga -c conda-forge
 
