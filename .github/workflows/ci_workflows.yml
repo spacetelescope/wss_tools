@@ -52,7 +52,7 @@ jobs:
         twine check --strict dist/*
 
   tests:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     needs: initial_check
     steps:
     - name: Checkout code
