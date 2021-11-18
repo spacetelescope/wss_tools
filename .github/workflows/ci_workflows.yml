@@ -14,7 +14,6 @@ jobs:
 
   tests:
     runs-on: ubuntu-18.04
-    needs: initial_check
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -36,7 +35,6 @@ jobs:
 
   dev_deps_tests:
     runs-on: ubuntu-latest
-    needs: initial_check
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
