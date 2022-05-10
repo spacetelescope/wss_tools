@@ -8,13 +8,17 @@ on:
     # * is a special character in YAML so you have to quote this string
     - cron: '0 6 * * 4'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   initial_check:
     name: Mandatory checks before CI
     runs-on: ubuntu-latest
     steps:
     - name: Check base branch
-      uses: actions/github-script@v3
+      uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
       with:
         script: |
@@ -33,11 +37,11 @@ jobs:
     needs: initial_check
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: '3.x'
     - name: Lint with flake8
@@ -56,11 +60,11 @@ jobs:
     needs: initial_check
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: '3.8'
     - name: Install and build
@@ -77,11 +81,11 @@ jobs:
     needs: initial_check
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: '3.x'
     - name: Install and build
@@ -101,9 +105,9 @@ jobs:
     if: ${{ github.event_name == 'schedule' }}
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: '3.9'
     - name: Install and build
