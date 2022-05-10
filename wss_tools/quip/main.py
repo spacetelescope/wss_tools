@@ -12,12 +12,14 @@ import os
 import platform
 import shutil
 import sys
+import warnings
 from functools import partial
 
 # THIRD-PARTY
 from astropy.io import fits
 from astropy.utils.data import get_pkg_data_filename, get_pkg_data_filenames
 from astropy.utils.introspection import minversion
+from astropy.wcs import FITSFixedWarning
 
 # GINGA and STGINGA
 from ginga.rv import main as gmain
@@ -33,6 +35,9 @@ try:
     logging.lastResort = None
 except AttributeError:
     pass
+
+# Supress warning from astropy.wcs
+warnings.filterwarnings('ignore', category=FITSFixedWarning)
 
 __all__ = ['main', 'get_ginga_plugins', 'copy_ginga_files', 'set_ginga_config',
            'shrink_input_images']
