@@ -7,11 +7,14 @@ from scipy import ndimage
 
 
 def rebin(arr, new_shape):
-    '''
-    Rebin 2D array arr to shape new_shape by averaging
-    :param arr:
-    :param new_shape:
-    :return: newarr - new array
+    ''' rebin(arr, new_shape)
+    Parameters
+    ----------
+    arr: 2D array
+    new_shape: dimensions of new shape
+    Returns
+    ----------
+    newarr - Rebin 2D array arr to shape new_shape by averaging
     '''
     shape = (new_shape[0], arr.shape[0] // new_shape[0],
              new_shape[1], arr.shape[1] // new_shape[1])
@@ -21,13 +24,16 @@ def rebin(arr, new_shape):
 
 
 def recenter(images, outputdir, doplot=False):
-    '''
-    Recenter images to NRCA3 FP3 (464, 1412)
-    :param images:
-    :param outputdir:
-    :param doplot:
-    :return: List of output_images that have been recentered
-    '''
+    ''' recenter(images, outputdir, doplot=False)
+   Parameters
+   ----------
+   images:
+   outputdir: dimensions of new shape
+   doplot: boolean
+   Returns
+   ----------
+   newarr - Rebin 2D array arr to shape new_shape by averaging
+   '''
     output_images = []
     for im_fn in images:
         # Open fits
@@ -41,13 +47,19 @@ def recenter(images, outputdir, doplot=False):
         # Remove background
         rebindata -= np.median(rebindata)
 
+        margin_left = 1.5
+        margin_right = 2.5
+        margin_top = 2.5
+        margin_bottom = 1.5
+        imsize = 2048
+
         # Find the center of mass and cut a box around: we should see the whole
         # PSF with about 1-2 PSF wide margins
         com = ndimage.center_of_mass(rebindata)
-        subdata = data[int((com[0] - 1.5) * 2048 / size):
-                       int((com[0] + 2.5) * 2048 / size),
-                       int((com[1] - 1.5) * 2048 / size):
-                       int((com[1] + 2.5) * 2048 / size)]
+        subdata = data[int((com[0] - margin_left) * imsize / size):
+                       int((com[0] + margin_right) * imsize / size),
+                       int((com[1] - margin_bottom) * imsize / size):
+                       int((com[1] + margin_top) * imsize / size)]
 
         # Rebin again
         rebinsubdata = rebin(subdata, [size, size])
@@ -57,31 +69,42 @@ def recenter(images, outputdir, doplot=False):
 
         # Find the center of mass and cut a box around: should see the inside
         # of the PSF
-        subdatacom = ndimage.center_of_mass(rebinsubdata)
-        subdata2 = subdata[int((subdatacom[0] - .5) * 2048 / size * 4 / size):
-                           int((subdatacom[0] + 1.5) * 2048 / size * 4 / size),
-                           int((subdatacom[1] - .5) * 2048 / size * 4 / size):
-                           int((subdatacom[1] + 1.5) * 2048 / size * 4 / size)]
+        com1 = ndimage.center_of_mass(rebinsubdata)
+        margin_left2 = 0.5
+        margin_right2 = 1.5
+        margin_bottom2 = 0.5
+        margin_top2 = 1.5
+        subdata2 = \
+            subdata[int((com1[0] - margin_left2) * imsize / size * 4 / size):
+                    int((com1[0] + margin_right2) * imsize / size * 4 / size),
+                    int((com1[1] - margin_bottom2) * imsize / size * 4 / size):
+                    int((com1[1] + margin_top2) * imsize / size * 4 / size)]
 
         # Find the center of mass
         com2 = ndimage.center_of_mass(subdata2)
 
+        xcntr = 464
+        ycntr = 1412
+
         # Recenter the image to 464, 1412 instead to match the WAS expectations
-        xcpsf = com2[0] + int((subdatacom[0] - .5) * 2048 / size * 4 / size)\
-                        + int((com[0] - 1.5) * 2048 / size)
-        ycpsf = com2[1] + int((subdatacom[1] - .5) * 2048 / size * 4 / size) \
-                        + int((com[1] - 1.5) * 2048 / size)
-        offsetdata = np.roll(data, (464 - int(ycpsf), 1412 - int(xcpsf)),
+        xcpsf = com2[0] + int((com1[0] - margin_left2)
+                              * imsize / size * 4 / size)\
+                        + int((com[0] - margin_left) * imsize / size)
+        ycpsf = com2[1] + int((com1[1] - margin_bottom2)
+                              * imsize / size * 4 / size) \
+                        + int((com[1] - margin_bottom) * imsize / size)
+        offsetdata = np.roll(data, (xcntr - int(ycpsf),
+                                    ycntr - int(xcpsf)),
                              axis=(1, 0))
 
         # Save back image into file
-        if abs(464 - ycpsf) > 10 or abs(1412 - xcpsf) > 10:
+        if abs(xcntr - ycpsf) > 10 or abs(ycntr - xcpsf) > 10:
             # Do the same for the ERR and the DQ
             hdul[2].data = np.roll(hdul[2].data,
-                                   (464 - int(ycpsf), 1412 - int(xcpsf)),
+                                   (xcntr - int(ycpsf), ycntr - int(xcpsf)),
                                    axis=(1, 0))
             hdul[3].data = np.roll(hdul[3].data,
-                                   (464 - int(ycpsf), 1412 - int(xcpsf)),
+                                   (xcntr - int(ycpsf), ycntr - int(xcpsf)),
                                    axis=(1, 0))
             hdul[1].data = offsetdata
             filename = os.path.basename(im_fn).replace('.fits',
@@ -104,12 +127,12 @@ def recenter(images, outputdir, doplot=False):
         ax4.imshow(rebinsubdata, origin='lower')
 
         ax5.imshow(subdata2, origin='lower')
-        ax5.plot([com2[1], com2[1]], [0, 2048/size*4/size*2-1], 'r')
-        ax5.plot([0, 2048/size*4/size*2-1], [com2[0], com2[0]], 'r')
+        ax5.plot([com2[1], com2[1]], [0, imsize/size*4/size*2-1], 'r')
+        ax5.plot([0, imsize/size*4/size*2-1], [com2[0], com2[0]], 'r')
 
         ax6.imshow(offsetdata, origin='lower')
-        ax6.plot([464, 464], [0, 2047], 'r')
-        ax6.plot([0, 2047], [1412, 1412], 'r')
+        ax6.plot([xcntr, xcntr], [0, imsize-1], 'r')
+        ax6.plot([0, imsize-1], [ycntr, ycntr], 'r')
         if doplot:
             plt.show()
         else:
