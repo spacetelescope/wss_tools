@@ -12,11 +12,15 @@ def rebin(arr, new_shape):
     '''Rebin 2D array to given shape by averaging.
     Parameters
     ----------
-    arr: 2D array
-    new_shape: dimensions of new shape
+    arr : ndarray
+        2D array.
+    new_shape : tuple of int
+        Dimensions of new shape.
+
     Returns
-    ----------
-    newarr - Rebin 2D array arr to shape new_shape by averaging
+    --------
+    newarr : ndarray
+        Rebinned array.
     '''
     shape = (new_shape[0], arr.shape[0] // new_shape[0],
              new_shape[1], arr.shape[1] // new_shape[1])
