@@ -199,10 +199,12 @@ def main(args):
         cfgmode = 'normalmode'
         ginga_config_py_sfx = cfgmode
 
-    # Wavefront Maintenance will trigger QUIP Automatic Mode run a utility to recenter
-    # the images if needed and not launch ginga
+    # Wavefront Maintenance will trigger QUIP Automatic Mode run a utility to
+    # recenter the images if needed and not launch ginga
     if op_type == 'wavefront_maintenance':
-        output_images = recenter(images, QUIP_DIRECTIVE['OUTPUT']['OUTPUT_DIRECTORY'], doplot=False)
+        output_images = recenter(images,
+                                 QUIP_DIRECTIVE['OUTPUT']['OUTPUT_DIRECTORY'],
+                                 doplot=False)
         quipout = QUIP_DIRECTIVE['OUTPUT']['OUT_FILE_PATH']
         output_xml(qio.quip_out_dict(output_images), quipout)
     else:

@@ -41,10 +41,13 @@ def recenter(images, outputdir, doplot=False):
         # Remove background
         rebindata -= np.median(rebindata)
 
-        # Find the center of mass and cut a box around: we should see the whole PSF with about 1-2 PSF wide margins
+        # Find the center of mass and cut a box around: we should see the whole
+        # PSF with about 1-2 PSF wide margins
         com = ndimage.center_of_mass(rebindata)
-        subdata = data[int((com[0] - 1.5) * 2048 / size):int((com[0] + 2.5) * 2048 / size),
-                    int((com[1] - 1.5) * 2048 / size):int((com[1] + 2.5) * 2048 / size)]
+        subdata = data[int((com[0] - 1.5) * 2048 / size):
+                       int((com[0] + 2.5) * 2048 / size),
+                       int((com[1] - 1.5) * 2048 / size):
+                       int((com[1] + 2.5) * 2048 / size)]
 
         # Rebin again
         rebinsubdata = rebin(subdata, [size, size])
@@ -52,34 +55,47 @@ def recenter(images, outputdir, doplot=False):
         # Remove background
         rebinsubdata -= np.median(rebinsubdata)
 
-        # Find the center of mass and cut a box around: we should see the inside of the PSF
+        # Find the center of mass and cut a box around: should see the inside
+        # of the PSF
         subdatacom = ndimage.center_of_mass(rebinsubdata)
-        subdata2 = subdata[int((subdatacom[0] - .5) * 2048 / size * 4 / size):int((subdatacom[0] + 1.5) * 2048 / size * 4 / size),
-                       int((subdatacom[1] - .5) * 2048 / size * 4 / size):int((subdatacom[1] + 1.5) * 2048 / size * 4 / size)]
+        subdata2 = subdata[int((subdatacom[0] - .5) * 2048 / size * 4 / size):
+                           int((subdatacom[0] + 1.5) * 2048 / size * 4 / size),
+                           int((subdatacom[1] - .5) * 2048 / size * 4 / size):
+                           int((subdatacom[1] + 1.5) * 2048 / size * 4 / size)]
 
         # Find the center of mass
         com2 = ndimage.center_of_mass(subdata2)
 
-        # "Recenter" the image to 464, 1412 instead to match the WAS expectations
-        xcpsf = com2[0] + int((subdatacom[0] - .5) * 2048 / size * 4 / size) + int((com[0] - 1.5) * 2048 / size)
-        ycpsf = com2[1] + int((subdatacom[1] - .5) * 2048 / size * 4 / size) + int((com[1] - 1.5) * 2048 / size)
-        offsetdata = np.roll(data, (464 - int(ycpsf), 1412 - int(xcpsf)), axis=(1, 0))
+        # Recenter the image to 464, 1412 instead to match the WAS expectations
+        xcpsf = com2[0] + int((subdatacom[0] - .5) * 2048 / size * 4 / size)\
+                        + int((com[0] - 1.5) * 2048 / size)
+        ycpsf = com2[1] + int((subdatacom[1] - .5) * 2048 / size * 4 / size) \
+                        + int((com[1] - 1.5) * 2048 / size)
+        offsetdata = np.roll(data, (464 - int(ycpsf), 1412 - int(xcpsf)),
+                             axis=(1, 0))
 
         # Save back image into file
         if abs(464 - ycpsf) > 10 or abs(1412 - xcpsf) > 10:
             # Do the same for the ERR and the DQ
-            hdul[2].data = np.roll(hdul[2].data, (464 - int(ycpsf), 1412 - int(xcpsf)), axis=(1, 0))
-            hdul[3].data = np.roll(hdul[3].data, (464 - int(ycpsf), 1412 - int(xcpsf)), axis=(1, 0))
+            hdul[2].data = np.roll(hdul[2].data,
+                                   (464 - int(ycpsf), 1412 - int(xcpsf)),
+                                   axis=(1, 0))
+            hdul[3].data = np.roll(hdul[3].data,
+                                   (464 - int(ycpsf), 1412 - int(xcpsf)),
+                                   axis=(1, 0))
             hdul[1].data = offsetdata
-            filename = os.path.basename(im_fn).replace('.fits', '_recenter.fits')
+            filename = os.path.basename(im_fn).replace('.fits',
+                                                       '_recenter.fits')
             hdul.writeto(os.path.join(outputdir, filename), overwrite=True)
             output_images.append(os.path.join(outputdir, filename))
-        else :
+        else:
             output_images.append(im_fn)
 
         # Plot
 
-        fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(3, 2, figsize=(12, 9))
+        fig, ((ax1, ax2),
+              (ax3, ax4),
+              (ax5, ax6)) = plt.subplots(3, 2, figsize=(12, 9))
         fig.tight_layout(pad=.3)
         ax1.imshow(data, origin='lower')
         ax2.imshow(rebindata, origin='lower')
@@ -97,5 +113,5 @@ def recenter(images, outputdir, doplot=False):
         if doplot:
             plt.show()
         else:
-            plt.savefig(os.path.join(outputdir,'plot.png'))
+            plt.savefig(os.path.join(outputdir, 'plot.png'))
     return output_images
