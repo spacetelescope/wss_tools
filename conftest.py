@@ -21,8 +21,8 @@ except ImportError:
 PYTEST_HEADER_MODULES['Astropy'] = 'astropy'
 PYTEST_HEADER_MODULES['Ginga'] = 'ginga'
 PYTEST_HEADER_MODULES['stginga'] = 'stginga'
-PYTEST_HEADER_MODULES.pop('Pandas')
-PYTEST_HEADER_MODULES.pop('h5py')
+PYTEST_HEADER_MODULES.pop('Pandas', None)
+PYTEST_HEADER_MODULES.pop('h5py', None)
 
 # Uncomment the following lines to display the version number of the
 # package rather than the version number of Astropy in the top line when
