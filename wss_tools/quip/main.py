@@ -27,6 +27,8 @@ from ginga.misc.Bunch import Bunch
 
 # LOCAL
 from . import qio
+from ..utils.recenter import recenter
+from ..utils.io import output_xml
 
 # Suppress logging "no handlers" message from Ginga
 import logging
@@ -197,24 +199,31 @@ def main(args):
         cfgmode = 'normalmode'
         ginga_config_py_sfx = cfgmode
 
-    # Add custom plugins.
-    # NOTE: There was a bug with setting this in ginga_config.py,
-    #       so we do this here instead.
-    global_plugins, local_plugins = get_ginga_plugins(ginga_config_py_sfx)
-    gmain.plugins += global_plugins
-    gmain.plugins += local_plugins
+    # Wavefront Maintenance will trigger QUIP Automatic Mode run a utility to recenter
+    # the images if needed and not launch ginga
+    if op_type == 'wavefront_maintenance':
+        output_images = recenter(images, QUIP_DIRECTIVE['OUTPUT']['OUTPUT_DIRECTORY'], doplot=False)
+        quipout = QUIP_DIRECTIVE['OUTPUT']['OUT_FILE_PATH']
+        output_xml(qio.quip_out_dict(output_images), quipout)
+    else:
+        # Add custom plugins.
+        # NOTE: There was a bug with setting this in ginga_config.py,
+        #       so we do this here instead.
+        global_plugins, local_plugins = get_ginga_plugins(ginga_config_py_sfx)
+        gmain.plugins += global_plugins
+        gmain.plugins += local_plugins
 
-    # Set Ginga config file(s)
-    set_ginga_config(mode=cfgmode, gcfg_suffix=ginga_config_py_sfx)
+        # Set Ginga config file(s)
+        set_ginga_config(mode=cfgmode, gcfg_suffix=ginga_config_py_sfx)
 
-    # Auto start core global plugins
-    for gplgname in ('ChangeHistory', ):
-        gplg = _locate_plugin(gmain.plugins, gplgname)
-        gplg.start = True
+        # Auto start core global plugins
+        for gplgname in ('ChangeHistory', ):
+            gplg = _locate_plugin(gmain.plugins, gplgname)
+            gplg.start = True
 
-    # Start Ginga
-    sys_args = ['ginga', f'--log={gingalog}'] + args + images
-    gmain.reference_viewer(sys_args)
+        # Start Ginga
+        sys_args = ['ginga', f'--log={gingalog}'] + args + images
+        gmain.reference_viewer(sys_args)
 
 
 def get_ginga_plugins(op_type):
