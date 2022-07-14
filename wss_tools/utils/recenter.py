@@ -30,16 +30,21 @@ def rebin(arr, new_shape):
 
 
 def recenter(images, outputdir, doplot=False):
-    ''' recenter(images, outputdir, doplot=False)
-   Parameters
-   ----------
-   images:
-   outputdir: dimensions of new shape
-   doplot: boolean
-   Returns
-   ----------
-   newarr - Rebin 2D array arr to shape new_shape by averaging
-   '''
+    ''' Recenter images based on NIRCam XY (464,1412) if offset > 10px
+    Parameters
+    ----------
+    images: List
+        List of input images to analyze
+    outputdir: String
+        Working directory where QUIP will write the files to
+    doplot: boolean
+        Show plots to the user via a popup
+
+    Returns
+    ----------
+    output_images: List
+        Output images that have been read and/or modified
+    '''
     output_images = []
     for im_fn in images:
         # Open fits
