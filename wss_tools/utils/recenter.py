@@ -9,7 +9,7 @@ __all__ = ['rebin', 'recenter']
 
 
 def rebin(arr, new_shape):
-    ''' rebin(arr, new_shape)
+    '''Rebin 2D array to given shape by averaging.
     Parameters
     ----------
     arr: 2D array
