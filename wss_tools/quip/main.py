@@ -174,7 +174,7 @@ def main(args):
         quipout = QUIP_DIRECTIVE['OUTPUT']['OUT_FILE_PATH']
         output_xml(qio.quip_out_dict(output_images), quipout)
         return
-    if op_type == 'thumbnail':
+    elif op_type == 'thumbnail':
         cfgmode = 'mosaicmode'
         ginga_config_py_sfx = op_type
         sci_ext = ('SCI', 1)
