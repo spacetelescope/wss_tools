@@ -1,33 +1,12 @@
 ''' Module to recenter images '''
 import os
 from astropy.io import fits
+from astropy.nddata import block_reduce
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import ndimage
 
-__all__ = ['rebin', 'recenter']
-
-
-def rebin(arr, new_shape):
-    '''Rebin 2D array to given shape by averaging.
-    Parameters
-    ----------
-    arr : ndarray
-        2D array.
-    new_shape : tuple of int
-        Dimensions of new shape.
-
-    Returns
-    --------
-    newarr : ndarray
-        Rebinned array.
-    '''
-    shape = (new_shape[0], arr.shape[0] // new_shape[0],
-             new_shape[1], arr.shape[1] // new_shape[1])
-    newarr = np.nanmedian(np.nanmedian(arr.reshape(shape), axis=-1), axis=1)
-
-    return newarr
-
+__all__ = ['recenter']
 
 def recenter(images, outputdir, doplot=False):
     ''' Recenter images based on NIRCam XY (464,1412) if offset > 10px
@@ -53,7 +32,7 @@ def recenter(images, outputdir, doplot=False):
 
         # Rebin image with very big pixels to find the approximate location
         size = 32
-        rebindata = rebin(data, [size, size])
+        rebindata = block_reduce(data, block_size=64, func=np.median)
 
         # Remove background
         rebindata -= np.median(rebindata)
@@ -73,7 +52,7 @@ def recenter(images, outputdir, doplot=False):
                        int((com[1] + margin_top) * imsize / size)]
 
         # Rebin again
-        rebinsubdata = rebin(subdata, [size, size])
+        rebinsubdata = block_reduce(subdata, block_size=8, func=np.median)
 
         # Remove background
         rebinsubdata -= np.median(rebinsubdata)
