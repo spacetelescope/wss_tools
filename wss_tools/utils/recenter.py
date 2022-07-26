@@ -77,12 +77,10 @@ def recenter(images, outputdir, doplot=False):
         ycntr = 1412
 
         # Recenter the image to 464, 1412 instead to match the WAS expectations
-        xcpsf = com2[0] + int((com1[0] - margin_left2)
-                              * imsize / size * 4 / size)\
-                        + int((com[0] - margin_left) * imsize / size)
-        ycpsf = com2[1] + int((com1[1] - margin_bottom2)
-                              * imsize / size * 4 / size) \
-                        + int((com[1] - margin_bottom) * imsize / size)
+        xcpsf = (com2[0] + int((com1[0] - margin_left2) * imsize / size * 4 / size)
+                 + int((com[0] - margin_left) * imsize / size))
+        ycpsf = (com2[1] + int((com1[1] - margin_bottom2) * imsize / size * 4 / size)
+                 + int((com[1] - margin_bottom) * imsize / size))
         offsetdata = np.roll(data, (xcntr - int(ycpsf),
                                     ycntr - int(xcpsf)),
                              axis=(1, 0))
