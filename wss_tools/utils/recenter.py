@@ -65,11 +65,10 @@ def recenter(images, outputdir, doplot=False):
         margin_right2 = 1.5
         margin_bottom2 = 0.5
         margin_top2 = 1.5
-        subdata2 = \
-            subdata[int((com1[0] - margin_left2) * imsize / size * 4 / size):
-                    int((com1[0] + margin_right2) * imsize / size * 4 / size),
-                    int((com1[1] - margin_bottom2) * imsize / size * 4 / size):
-                    int((com1[1] + margin_top2) * imsize / size * 4 / size)]
+        subdata2 = subdata[int((com1[0] - margin_left2) * imsize / size * 4 / size):
+                           int((com1[0] + margin_right2) * imsize / size * 4 / size),
+                           int((com1[1] - margin_bottom2) * imsize / size * 4 / size):
+                           int((com1[1] + margin_top2) * imsize / size * 4 / size)]
 
         # Find the center of mass
         com2 = ndimage.center_of_mass(subdata2)
