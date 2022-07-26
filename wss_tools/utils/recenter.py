@@ -13,12 +13,12 @@ def recenter(images, outputdir, doplot=False):
     '''Recenter images based on NIRCam XY (464,1412) if offset > 10px
     Parameters
     ----------
-    images: List
-        List of input images to analyze
-    outputdir: String
-        Working directory where QUIP will write the files to
-    doplot: boolean
-        Show plots to the user via a popup
+    images : list
+        List of input images to analyze.
+    outputdir : str
+        Working directory where QUIP will write the files to.
+    doplot : bool
+        Show plots to the user via a popup.
 
     Returns
     ----------
