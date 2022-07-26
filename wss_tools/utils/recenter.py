@@ -10,7 +10,7 @@ __all__ = ['recenter']
 
 
 def recenter(images, outputdir, doplot=False):
-    ''' Recenter images based on NIRCam XY (464,1412) if offset > 10px
+    '''Recenter images based on NIRCam XY (464,1412) if offset > 10px
     Parameters
     ----------
     images: List
