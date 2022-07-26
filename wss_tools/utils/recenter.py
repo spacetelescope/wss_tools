@@ -21,9 +21,9 @@ def recenter(images, outputdir, doplot=False):
         Show plots to the user via a popup.
 
     Returns
-    ----------
-    output_images: List
-        Output images that have been read and/or modified
+    -------
+    output_images : list
+        Output images that have been read and/or modified.
     '''
     output_images = []
     for im_fn in images:
