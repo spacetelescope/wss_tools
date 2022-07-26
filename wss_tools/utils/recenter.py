@@ -46,15 +46,15 @@ def recenter(images, outputdir, doplot=False):
             margin_left = 1.5
             margin_right = 2.5
             margin_top = 2.5
-            margin_bottom = 1.5
+            margin_bttm = 1.5
             imsize = 2048
 
-            # Find the center of mass and cut a box around: we should see the whole
-            # PSF with about 1-2 PSF wide margins
+            # Find the center of mass and cut a box around: we should see the
+            # whole PSF with about 1-2 PSF wide margins
             com = ndimage.center_of_mass(rebindata)
             subdata = data[int((com[0] - margin_left) * imsize / size):
                            int((com[0] + margin_right) * imsize / size),
-                           int((com[1] - margin_bottom) * imsize / size):
+                           int((com[1] - margin_bttm) * imsize / size):
                            int((com[1] + margin_top) * imsize / size)]
 
             # Rebin again
@@ -63,17 +63,17 @@ def recenter(images, outputdir, doplot=False):
             # Remove background
             rebinsubdata -= np.median(rebinsubdata)
 
-            # Find the center of mass and cut a box around: should see the inside
-            # of the PSF
+            # Find the center of mass and cut a box around:
+            # should see the inside of the PSF
             com1 = ndimage.center_of_mass(rebinsubdata)
             margin_left2 = 0.5
             margin_right2 = 1.5
-            margin_bottom2 = 0.5
+            margin_bttm2 = 0.5
             margin_top2 = 1.5
-            subdata2 = subdata[int((com1[0] - margin_left2) * imsize / size * 4 / size):
-                               int((com1[0] + margin_right2) * imsize / size * 4 / size),
-                               int((com1[1] - margin_bottom2) * imsize / size * 4 / size):
-                               int((com1[1] + margin_top2) * imsize / size * 4 / size)]
+            subdata2 = subdata[int((com1[0]-margin_left2)*imsize/size*4/size):
+                               int((com1[0]+margin_right2)*imsize/size*4/size),
+                               int((com1[1]-margin_bttm2)*imsize/size*4/size):
+                               int((com1[1]+margin_top2)*imsize/size*4/size)]
 
             # Find the center of mass
             com2 = ndimage.center_of_mass(subdata2)
@@ -81,11 +81,12 @@ def recenter(images, outputdir, doplot=False):
             xcntr = 464
             ycntr = 1412
 
-            # Recenter the image to 464, 1412 instead to match the WAS expectations
-            xcpsf = (com2[0] + int((com1[0] - margin_left2) * imsize / size * 4 / size)
-                     + int((com[0] - margin_left) * imsize / size))
-            ycpsf = (com2[1] + int((com1[1] - margin_bottom2) * imsize / size * 4 / size)
-                     + int((com[1] - margin_bottom) * imsize / size))
+            # Recenter the image to 464, 1412 instead to match the WAS
+            # expectations
+            xcpsf = (com2[0]+int((com1[0]-margin_left2)*imsize/size*4/size)
+                     + int((com[0]-margin_left)*imsize/size))
+            ycpsf = (com2[1]+int((com1[1]-margin_bttm2)*imsize/size*4/size)
+                     + int((com[1]-margin_bttm)*imsize/size))
             offsetdata = np.roll(data, (xcntr - int(ycpsf),
                                         ycntr - int(xcpsf)),
                                  axis=(1, 0))
@@ -94,10 +95,10 @@ def recenter(images, outputdir, doplot=False):
             if abs(xcntr - ycpsf) > 10 or abs(ycntr - xcpsf) > 10:
                 # Do the same for the ERR and the DQ
                 hdul[2].data = np.roll(hdul[2].data,
-                                       (xcntr - int(ycpsf), ycntr - int(xcpsf)),
+                                       (xcntr-int(ycpsf), ycntr-int(xcpsf)),
                                        axis=(1, 0))
                 hdul[3].data = np.roll(hdul[3].data,
-                                       (xcntr - int(ycpsf), ycntr - int(xcpsf)),
+                                       (xcntr-int(ycpsf), ycntr-int(xcpsf)),
                                        axis=(1, 0))
                 hdul[1].data = offsetdata
                 filename = os.path.basename(im_fn).replace('.fits',
