@@ -12,3 +12,6 @@ References/API
 
 .. automodapi:: wss_tools.utils.mosaic
   :no-inheritance-diagram:
+
+.. automodapi:: wss_tools.utils.recenter
+  :no-inheritance-diagram:

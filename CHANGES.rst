@@ -1,6 +1,8 @@
 1.3 (unreleased)
 ----------------
 
+* Recenter images if necessary for routine wavefront maintenance. [#95]
+
 1.2 (2021-06-11)
 ----------------
 
