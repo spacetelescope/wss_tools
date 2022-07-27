@@ -27,6 +27,8 @@ from ginga.misc.Bunch import Bunch
 
 # LOCAL
 from . import qio
+from ..utils.recenter import recenter
+from ..utils.io import output_xml
 
 # Suppress logging "no handlers" message from Ginga
 import logging
@@ -163,7 +165,16 @@ def main(args):
     if os.path.exists(gingalog):
         os.remove(gingalog)
 
-    if op_type == 'thumbnail':
+    # Wavefront Maintenance will trigger QUIP Automatic Mode run a utility to
+    # recenter the images if needed and not launch ginga
+    if op_type == 'wavefront_maintenance':
+        output_images = recenter(images,
+                                 QUIP_DIRECTIVE['OUTPUT']['OUTPUT_DIRECTORY'],
+                                 doplot=False)
+        quipout = QUIP_DIRECTIVE['OUTPUT']['OUT_FILE_PATH']
+        output_xml(qio.quip_out_dict(output_images), quipout)
+        return
+    elif op_type == 'thumbnail':
         cfgmode = 'mosaicmode'
         ginga_config_py_sfx = op_type
         sci_ext = ('SCI', 1)
