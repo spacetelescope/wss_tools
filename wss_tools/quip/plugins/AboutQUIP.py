@@ -50,7 +50,7 @@ class AboutQUIP(GlobalPlugin):
         vbox.set_spacing(2)
 
         # Take a text widget to show version info
-        msgFont = self.fv.getFont('sansFont', 12)
+        msgFont = self.fv.get_font('sansFont', 12)
         tw = Widgets.TextArea(wrap=True, editable=False)
         tw.set_font(msgFont)
         tw.set_text(self.info_string())
