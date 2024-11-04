@@ -93,7 +93,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install libxml2-utils
         python -m pip install --upgrade pip setuptools wheel
-        python -m pip install numpy
+        python -m pip install numpy pyerfa astropy-iers-data PyYAML packaging
         python -m pip install astropy -i https://pypi.anaconda.org/astropy/simple --pre -U
         python -m pip install git+https://github.com/ejeschke/ginga.git@main#egg=ginga
         python -m pip install git+https://github.com/spacetelescope/stginga.git@master#egg=stginga
