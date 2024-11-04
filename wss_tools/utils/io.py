@@ -1,10 +1,10 @@
 """Module to handle I/O for files."""
 
 # STDLIB
+import datetime
 import os
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-from datetime import datetime
 from xml.dom import minidom
 
 __all__ = ['output_xml']
@@ -100,6 +100,6 @@ def output_xml(xmldict, filename):
 
 def _get_timestamp():
     """Return dictionary with UTC timestamp metadata."""
-    d = datetime.utcnow()
+    d = datetime.datetime.now(datetime.UTC)
     return {'@date': d.strftime('%Y-%m-%dZ'),
             '@time': d.strftime('%H:%M:%S.%fZ')}
