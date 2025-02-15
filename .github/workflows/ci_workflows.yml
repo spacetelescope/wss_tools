@@ -22,7 +22,7 @@ jobs:
       if: github.event_name == 'pull_request'
       with:
         script: |
-          const allowed_basebranch = 'master';
+          const allowed_basebranch = 'main';
           const pr = context.payload.pull_request;
           if (pr.base.ref !== allowed_basebranch) {
             core.setFailed(`PR opened against ${pr.base.ref}, not ${allowed_basebranch}`);

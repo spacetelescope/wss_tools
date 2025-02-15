@@ -2,7 +2,7 @@
 so you do not need to remove them! -->
 
 <!-- Please be sure to check out our code of conduct,
-https://github.com/spacetelescope/wss_tools/blob/master/CODE_OF_CONDUCT.md . -->
+https://github.com/spacetelescope/wss_tools/blob/main/CODE_OF_CONDUCT.md . -->
 
 <!-- Please just have a quick search on GitHub to see if a similar
 pull request has already been posted.
