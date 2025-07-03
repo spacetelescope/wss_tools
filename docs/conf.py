@@ -133,7 +133,9 @@ intersphinx_mapping.update({
 
 # -- Options for linkcheck output ---------------------------------------------
 linkcheck_retry = 5
-linkcheck_ignore = ['https://confluence.stsci.edu']
+linkcheck_ignore = [
+    'https://confluence.stsci.edu',
+    'https://jwst-docs.stsci.edu']
 linkcheck_timeout = 180
 linkcheck_anchors = True
 
